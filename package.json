@@ -1,0 +1,17 @@
+{
+  "name": "cap-arras-patrimoine",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Landing page Cap. — stratégie de rémunération du dirigeant, par Arras Patrimoine",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  }
+}
