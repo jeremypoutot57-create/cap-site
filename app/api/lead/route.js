@@ -98,7 +98,7 @@ function evaluer(p) {
 
 
 // —— Copie par mail vers le cabinet. Silencieuse si Resend n'est pas configuré. ——
-async function envoyerCopie({ titre, description, p, temperature }) {
+async function envoyerCopie({ titre, description, p, temperature, identite }) {
   const cle = process.env.RESEND_API_KEY;
   const dest = (process.env.LEAD_EMAIL_TO || "contact@arras-patrimoine.fr")
     .split(",")
@@ -142,7 +142,7 @@ async function envoyerCopie({ titre, description, p, temperature }) {
         from: exp,
         to: dest,
         reply_to: p.email,
-        subject: `[${temperature}] ${identite} — ${p.statut || "dirigeant"}`,
+        subject: `[${temperature}] ${identite || "Nouveau dossier"} — ${p.statut || "dirigeant"}`,
         html,
         text: description,
       }),
@@ -260,7 +260,7 @@ export async function POST(request) {
   const cle = (process.env.NOCRM_API_KEY || "").trim();
 
   // La copie mail part toujours, que noCRM réponde ou non.
-  const copie = envoyerCopie({ titre, description, p, temperature });
+  const copie = envoyerCopie({ titre, description, p, temperature, identite });
 
   if (!sousDomaine || !cle) {
     console.warn("[cap] noCRM non configuré — lead journalisé :", titre);
