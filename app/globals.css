@@ -493,6 +493,7 @@ p{margin:0 0 1.2em;max-width:66ch;color:#CFDAE7}
 .preuve{position:relative;overflow:hidden}
 .preuve::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--rose);opacity:.6}
 .preuve b{color:#fff}
+.preuve b span{font-size:inherit;font-weight:inherit;letter-spacing:inherit;color:inherit}
 .avis-mini{position:relative}
 .avis-mini::before{content:"“";position:absolute;right:14px;top:2px;font-family:var(--display);font-size:64px;line-height:1;color:var(--rose-30);font-weight:700}
 
@@ -677,3 +678,71 @@ p{margin:0 0 1.2em;max-width:66ch;color:#CFDAE7}
 .rassurance .grand{font-family:var(--display);font-weight:600;font-size:clamp(21px,2.5vw,30px);line-height:1.28;letter-spacing:-.03em;color:#fff;margin:0 0 1em;max-width:26ch;position:relative}
 .rassurance p{font-size:16.5px;line-height:1.65;color:#C6D2E0;position:relative;max-width:68ch}
 .rassurance .signature{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:-.02em;color:var(--rose);margin:1.6em 0 0}
+
+
+/* ═══════════════ LE CHEMIN PAR DÉFAUT ═══════════════ */
+.chemin{border:1px solid rgba(255,255,255,.09);border-radius:18px;background:linear-gradient(180deg,rgba(232,93,138,.07),rgba(255,255,255,.02));padding:clamp(26px,3vw,40px);display:flex;flex-direction:column;gap:1.4em}
+.chemin .titre{font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:-.02em;color:#fff;margin:0}
+.chemin .etapes{display:grid;gap:4px}
+.chemin .et{border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px 18px;background:rgba(255,255,255,.035)}
+.chemin .et b{display:block;font-family:var(--display);font-weight:600;font-size:16.5px;letter-spacing:-.02em;color:#fff;margin-bottom:.25em}
+.chemin .et span{font-size:13.5px;color:var(--gris)}
+.chemin .et.f{border-color:var(--rose-30);background:var(--rose-14)}
+.chemin .et.f b{color:var(--rose)}
+.chemin .fl{display:flex;align-items:center;gap:.7em;padding:.35em 0 .35em 18px}
+.chemin .fl i{width:1px;height:22px;background:rgba(255,255,255,.25);position:relative;flex:0 0 1px}
+.chemin .fl i::after{content:"";position:absolute;left:-3.5px;bottom:-1px;border:3.5px solid transparent;border-top:6px solid rgba(255,255,255,.45)}
+.chemin .fl small{font-size:13px;color:#E0A94B}
+.chemin .legende{font-size:14.5px;color:var(--gris);line-height:1.6;margin:0;max-width:none}
+
+
+/* ═══════════════ LE PARCOURS (bloc problème, pleine largeur) ═══════════════ */
+.parcours{border:1px solid rgba(255,255,255,.09);border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));padding:clamp(26px,3.2vw,44px)}
+.etapes-h{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:clamp(12px,1.6vw,24px);align-items:stretch}
+.etapes-h li{display:flex;flex-direction:column;gap:.5em}
+.etapes-h li b{font-family:var(--display);font-weight:600;font-size:clamp(16px,1.5vw,18.5px);letter-spacing:-.022em;color:#fff;line-height:1.25}
+.etapes-h li p{font-size:14px;color:var(--gris);margin:0;line-height:1.5;max-width:none}
+.etapes-h .jalon{width:30px;height:30px;border-radius:50%;border:1px solid var(--trait-fort);display:grid;place-items:center;font-family:var(--mono);font-size:12px;color:var(--gris);margin-bottom:.3em}
+.etapes-h .arrivee .jalon{border-color:var(--rose);background:var(--rose-14);color:var(--rose)}
+.etapes-h .arrivee b{color:var(--rose)}
+.etapes-h .passage{max-width:190px;padding-top:34px;position:relative}
+.etapes-h .passage::before{content:"";position:absolute;left:-14px;right:-14px;top:14px;height:1px;background:linear-gradient(90deg,transparent,rgba(224,169,75,.55),transparent)}
+.etapes-h .cle{display:inline-flex;align-items:center;gap:.45em;font-size:13px;font-weight:600;color:#E0A94B}
+.etapes-h .cle::before{content:"−";font-weight:700}
+.parcours .legende{font-size:15px;color:#C6D2E0;line-height:1.6;margin:2em 0 0;padding-top:1.6em;border-top:1px solid rgba(255,255,255,.08);max-width:80ch}
+@media(max-width:1000px){.etapes-h{grid-template-columns:1fr}.etapes-h .passage{max-width:none;padding:14px 0 14px 0}.etapes-h .passage::before{left:0;right:0;top:0}}
+
+/* Les quatre conseils, en dessous */
+.conseils{margin-top:16px;border:1px solid rgba(255,255,255,.09);border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.012));padding:clamp(26px,3.2vw,44px)}
+.conseils-t{display:flex;flex-wrap:wrap;gap:.4em 1.2em;align-items:baseline;margin-bottom:1.8em}
+.conseils-t b{font-family:var(--display);font-weight:600;font-size:clamp(17px,1.7vw,21px);letter-spacing:-.024em;color:#fff}
+.conseils-t span{font-size:14px;color:var(--gris-bas)}
+.conseils-g{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden}
+.conseil{background:#0D1728;padding:20px 20px 18px;display:flex;flex-direction:column;gap:.5em}
+.conseil b{font-family:var(--display);font-weight:600;font-size:16px;letter-spacing:-.02em;color:#fff}
+.conseil p{font-size:13.5px;color:var(--gris);margin:0;line-height:1.5;flex:1;max-width:none}
+.conseil em{font-style:normal;font-size:13px;color:#E0A94B}
+@media(max-width:900px){.conseils-g{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.conseils-g{grid-template-columns:1fr}}
+.verdict{display:flex;align-items:center;gap:1em;margin-top:1.8em;padding-top:1.6em;border-top:1px solid rgba(255,255,255,.08)}
+.verdict i{flex:0 0 auto;width:36px;height:2px;background:var(--rose);box-shadow:0 0 16px rgba(232,93,138,.6);border-radius:2px}
+.verdict p{font-size:clamp(15.5px,1.5vw,18px);color:#C6D2E0;margin:0;line-height:1.55;max-width:none}
+.verdict b{color:#fff;font-weight:600}
+
+/* ═══════════════ BARRE D'ACTION INTERMÉDIAIRE ═══════════════ */
+.barre-cta{display:flex;align-items:center;gap:1.2em;flex-wrap:wrap;margin-top:2.4rem;padding:1.5em 1.8em;border:1px solid var(--rose-30);border-radius:16px;background:linear-gradient(90deg,rgba(232,93,138,.10),rgba(232,93,138,.03))}
+.barre-cta p{font-family:var(--display);font-weight:600;font-size:clamp(16px,1.6vw,19px);letter-spacing:-.022em;color:#fff;margin:0;flex:1 1 auto;max-width:none}
+.barre-cta span{font-size:13.5px;color:var(--gris)}
+@media(max-width:640px){.barre-cta{flex-direction:column;align-items:flex-start;gap:.9em}.barre-cta .btn{width:100%;justify-content:center}}
+
+/* ═══════════════ BANDEAU DES CLOISONS (dans le constat) ═══════════════ */
+.cloisons{margin-top:2.2rem;border:1px solid rgba(255,255,255,.09);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012));padding:clamp(24px,2.8vw,36px)}
+.cloisons .ct{font-family:var(--display);font-weight:600;font-size:clamp(17px,1.7vw,20px);letter-spacing:-.024em;color:#fff;margin:0 0 1.4em;max-width:none}
+.cl-g{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden}
+.cl-g div{background:#0D1728;padding:18px 20px}
+.cl-g b{display:block;font-family:var(--display);font-weight:600;font-size:15.5px;letter-spacing:-.02em;color:#fff;margin-bottom:.4em}
+.cl-g span{font-size:13.5px;color:#E0A94B}
+.cloisons .cf{font-size:15.5px;color:#C6D2E0;line-height:1.6;margin:1.6em 0 0;max-width:none}
+.cloisons .cf b{color:#fff;font-weight:600}
+@media(max-width:900px){.cl-g{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.cl-g{grid-template-columns:1fr}}

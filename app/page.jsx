@@ -73,7 +73,7 @@ export default function Page() {
                 <Video />
                 <div className="etiquette-video">
                   <b>Jérémy Poutot</b>
-                  <span>Fondateur · 12 ans de pratique</span>
+                  <span>Fondateur · juriste du patrimoine</span>
                 </div>
               </div>
               <div className="preuves">
@@ -136,6 +136,20 @@ export default function Page() {
               </div>
             </div>
 
+
+            <div className="cloisons reveal">
+              <p className="ct">Et pourtant, chacun de vos conseils fait bien son travail.</p>
+              <div className="cl-g">
+                <div><b>Expert-comptable</b><span>Ne voit pas votre foyer</span></div>
+                <div><b>Banquier</b><span>Ne voit pas la holding</span></div>
+                <div><b>Assureur</b><span>Ne voit pas l&apos;arbitrage</span></div>
+                <div><b>Notaire</b><span>Ne voit pas le flux</span></div>
+              </div>
+              <p className="cf">
+                L&apos;écart se creuse entre les quatre, là où personne n&apos;a le mandat de
+                regarder. <b>C&apos;est exactement la place que Cap. occupe.</b>
+              </p>
+            </div>
             <div className="accroche reveal">
               <p>Ce poste existe dans les grands groupes. Dans une PME, c&apos;est vous, le dimanche soir.</p>
             </div>
@@ -167,64 +181,13 @@ export default function Page() {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
 
-        {/* 06 · PÉRIMÈTRES */}
-        <section id="perimetres" data-cote="04" className="sombre">
-          <div className="wrap">
-            <div className="intro">
-              <div>
-                <span className="eyebrow reveal">Le vrai problème</span>
-                <h2 className="reveal">Chacun sa pièce, et personne dans le couloir</h2>
-              </div>
-              <p className="reponse reveal">
-              Vos conseils ne sont pas mauvais, ils sont cloisonnés. L&apos;argent se perd là où leurs
-              périmètres ne se touchent pas.
-            </p>
-            </div>
-
-            <div className="probleme">
-              <div className="chiffre-geant reveal">
-                <div>
-                  <div className="sur">Sur 100 € produits par votre société</div>
-                  <div className="nb"><i>44</i> €</div>
-                  <p className="legende">arrivent réellement chez vous, sur le chemin par défaut.</p>
-                </div>
-                <div className="flux-mini">
-                  <div className="e"><b>100 €</b>produits</div>
-                  <div className="fl-a"><span>charges</span></div>
-                  <div className="e"><b>62 €</b>après charges</div>
-                  <div className="fl-a"><span>impôt</span></div>
-                  <div className="e f"><b>44 €</b>chez vous</div>
-                </div>
-              </div>
-
-              <div className="conseils reveal">
-                <p className="titre">Ce que chacun voit de votre rémunération</p>
-                {[
-                  ["Expert-comptable", "Tient les comptes d'une société à la fois, sur l'exercice clos.", "Ne voit pas votre foyer"],
-                  ["Banquier", "Lit vos revenus déclarés pour décider de ce qu'il vous prête.", "Ne voit pas la holding"],
-                  ["Assureur", "Place de la couverture, prévoyance et retraite.", "Ne voit pas l'arbitrage"],
-                  ["Notaire", "Intervient le jour où ça compte, trop tard pour la trajectoire.", "Ne voit pas le flux"],
-                ].map(([nom, voit, angle], i) => (
-                  <div className="conseil" key={nom}>
-                    <span className="pt">{i + 1}</span>
-                    <div>
-                      <b>{nom}</b>
-                      <span>{voit}</span>
-                      <em>{angle}</em>
-                    </div>
-                  </div>
-                ))}
-                <div className="ligne-cap">
-                  <i />
-                  <div>
-                    <b>La ligne que Cap. occupe</b>
-                    <span>Entre les quatre, là où personne n&apos;a le mandat de regarder.</span>
-                  </div>
-                </div>
-              </div>
+            <div className="barre-cta reveal">
+              <p>Une de ces phrases est la vôtre ?</p>
+              <a className="btn btn--primaire" href="#dossier" data-ev="cta_scenes">
+                Voir si mon dossier passe <span className="fl">→</span>
+              </a>
+              <span>3 questions, aucune coordonnée</span>
             </div>
           </div>
         </section>
@@ -403,6 +366,14 @@ export default function Page() {
                 </div>
               ))}
             </div>
+
+            <div className="barre-cta reveal">
+              <p>Vous voulez savoir ce que ça donnerait chez vous ?</p>
+              <a className="btn btn--primaire" href="#dossier" data-ev="cta_livrable">
+                Voir si mon dossier passe <span className="fl">→</span>
+              </a>
+              <span>Réponse d&apos;un humain sous 24 h ouvrées</span>
+            </div>
           </div>
         </section>
 
@@ -579,6 +550,16 @@ export default function Page() {
                 </ul>
               </div>
             </div>
+            <div className="fiche fiche--vert reveal" style={{ marginTop: "18px" }}>
+              <span className="num">Et si vous ne trouvez rien chez moi ?</span>
+              <p>
+                Ça arrive dans environ un dossier sur cinq : la situation est déjà cohérente, il
+                n&apos;y a pas d&apos;écart significatif à récupérer. Nous vous le disons par écrit,
+                avec le chiffrage qui le démontre. Vous repartez avec la cartographie complète de
+                votre situation et la certitude de ne pas passer à côté de quelque chose.
+              </p>
+            </div>
+
             <div className="capacite reveal">
               <span>Règle de capacité</span>
               <span>
@@ -589,36 +570,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* 15 · ET SI ON NE TROUVE RIEN */}
-        <section data-cote="13">
-          <div className="wrap wrap--etroit">
-            <div className="intro">
-              <div>
-                <span className="eyebrow reveal">La question qu&apos;on nous pose rarement</span>
-                <h2 className="reveal">Et si vous ne trouvez rien chez moi ?</h2>
-              </div>
-              <p className="reponse reveal">
-              Ça arrive dans environ un dossier sur cinq. Votre situation est déjà cohérente, votre
-              expert-comptable a bien travaillé, il n&apos;y a pas d&apos;écart significatif à
-              récupérer. Dans ce cas, nous vous le disons par écrit, avec le chiffrage qui le
-              démontre.
-            </p>
-            </div>
-            <p className="reveal">
-              Ce n&apos;est pas un échec, et ce n&apos;est pas rien. Vous repartez avec la
-              cartographie complète de votre situation, la preuve chiffrée que vous ne passez pas à
-              côté de vingt ou trente mille euros par an, et les trois signaux qui devront vous faire
-              rouvrir le dossier plus tard. Beaucoup de dirigeants nous disent que c&apos;est la
-              première fois qu&apos;ils dorment tranquilles sur ce sujet.
-            </p>
-            <p className="reveal">
-              C&apos;est aussi pour cette raison que nous auditons avant de promettre. Un cabinet qui
-              vous annonce un montant avant d&apos;avoir ouvert vos comptes vous vend un chiffre, pas
-              un travail.
-            </p>
-          </div>
-        </section>
-
+        
         {/* 16 · QUI S'EN OCCUPE */}
         <section data-cote="14" className="sombre">
           <div className="wrap">
@@ -638,12 +590,12 @@ export default function Page() {
                 <div className="portrait"><img src="/jeremy.png" alt="Jérémy Poutot" /></div>
                 <div className="fiche-p">
                   <h4>Jérémy Poutot</h4>
-                  <span className="role">Fondateur · mène l&apos;arbitrage et signe le plan</span>
-                  <p>Il a dirigé, et perdu, des sociétés. Ça change la façon dont on lit un bilan et dont on parle à un dirigeant.</p>
+                  <span className="role">Fondateur · juriste du patrimoine</span>
+                  <p>Juriste du patrimoine et ingénieur patrimonial, il exerce aussi en family office auprès de dirigeants et de familles. C&apos;est lui qui mène la séance d&apos;arbitrage et qui signe le plan.</p>
                   <ul>
-                    <li>Douze ans de pratique</li>
-                    <li>Deux masters en stratégies sociétaires et ingénierie patrimoniale, Toulouse</li>
-                    <li>Diplômé fédéral juriste du patrimoine</li>
+                    <li>Juriste du patrimoine</li>
+                    <li>Ingénierie patrimoniale et stratégies sociétaires</li>
+                    <li>Family office · dirigeants et groupes familiaux</li>
                   </ul>
                 </div>
               </div>
@@ -651,7 +603,7 @@ export default function Page() {
                 <div className="portrait"><img src="/marie-amelie.png" alt="Marie-Amélie" /></div>
                 <div className="fiche-p">
                   <h4>Marie-Amélie</h4>
-                  <span className="role">Pôle ingénierie · construit et chiffre</span>
+                  <span className="role">Pôle ingénierie patrimoniale</span>
                   <p>Elle bâtit la cartographie et les scénarios, et c&apos;est elle qui va chercher la ligne qui manque dans la liasse.</p>
                   <ul>
                     <li>Votre interlocutrice pendant les trente jours</li>
@@ -763,17 +715,6 @@ export default function Page() {
                 </p>
               </div>
             </div>
-            <div className="rassure reveal" style={{ marginTop: "2rem" }}>
-              <span>30 minutes, en visio</span>
-              <span>Aucun document à préparer</span>
-              <span>Aucune relance si vous ne donnez pas suite</span>
-            </div>
-          </div>
-        </section>
-
-        {/* 18 ter · PAS DE PRESSION */}
-        <section>
-          <div className="wrap wrap--etroit">
             <div className="rassurance reveal">
               <p className="grand">
                 Vous n&apos;avez pas besoin de savoir comment vous vous rémunérez pour venir nous voir.
@@ -791,9 +732,16 @@ export default function Page() {
               </p>
               <p className="signature">C&apos;est pas compliqué, juste mal expliqué.</p>
             </div>
+
+            <div className="rassure reveal" style={{ marginTop: "2rem" }}>
+              <span>30 minutes, en visio</span>
+              <span>Aucun document à préparer</span>
+              <span>Aucune relance si vous ne donnez pas suite</span>
+            </div>
           </div>
         </section>
 
+        
         {/* 19 · QUESTIONNAIRE */}
         <section data-cote="17" id="dossier">
           <div className="wrap wrap--etroit">
