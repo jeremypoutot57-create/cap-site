@@ -1,8 +1,8 @@
 {
   "name": "cap-arras-patrimoine",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
-  "description": "Landing page Cap. — stratégie de rémunération du dirigeant, par Arras Patrimoine",
+  "description": "Landing page Cap. — tunnel Meta, approche Ultra, PMC 14/09/2026",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

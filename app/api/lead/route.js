@@ -2,7 +2,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 import { phraseRecap } from "../../../components/recapitulatif";
-import { CONDITIONNELLES } from "../../../components/donnees";
+import { SEUIL_HORS_CIBLE } from "../../../components/donnees";
 
 const TEXTES = {
   plafond: "Se limite dans ce qu'il se verse à cause des charges",
@@ -38,61 +38,51 @@ function evaluer(p) {
   let note = 0;
   const alertes = [];
 
-  // Hors cible
-  if (p.ca === "Moins de 150 000 €") {
-    alertes.push("CA sous le seuil de 150 000 € : hors cible annoncée sur la page.");
+  // Hors cible : la société n'a pas encore la capacité de financer une véritable enveloppe dirigeant.
+  if (p.ca === SEUIL_HORS_CIBLE) {
+    alertes.push("CA sous le seuil de 350 000 € : hors cible annoncée sur la page.");
     note -= 5;
   }
 
-  // Capacité à récupérer
-  if (["50 000 à 80 000 €", "80 000 à 120 000 €", "Plus de 120 000 €"].includes(p.remuneration)) note += 2;
-  if (p.remuneration === "Moins de 30 000 €" && p.ca !== "Moins de 150 000 €") {
-    note += 3;
-    alertes.push("Plafond mental probable : se verse peu alors que la société tourne. Scène 01.");
-  }
-  if (["1 à 5 M€", "Plus de 5 M€", "500 000 € à 1 M€"].includes(p.ca)) note += 2;
+  // Capacité présente
+  if (["1 à 3 M€", "3 à 10 M€", "Plus de 10 M€"].includes(p.ca)) note += 2;
+  if (p.ca === "350 000 € à 1 M€") note += 1;
 
-  // Vacance du poste d'arbitrage
+  // Écart capacité / rémunération : le client parfait combine capacité présente et architecture mauvaise.
+  if (p.remuneration === "Moins de 65 000 € net" && p.ca !== SEUIL_HORS_CIBLE) {
+    note += 3;
+    alertes.push("Se verse moins de 65 000 € net alors que la société tourne : capacité présente, architecture probablement jamais rouverte.");
+  }
+  if (["65 000 à 100 000 €", "100 000 à 150 000 €"].includes(p.remuneration)) note += 2;
+  if (p.remuneration === "Plus de 150 000 €") note += 1;
+
+  // Structure
+  if (p.statut === "Groupe avec holding") { note += 2; alertes.push("Holding en place : vérifier ce qu'elle sert réellement (source, mère-fille, CCA)."); }
+  if (p.statut === "Société avec un ou plusieurs associés") alertes.push("Associés : la décision n'est pas solitaire, prévoir le sujet en séance.");
+
+  // Vacance du siège
   if (p.suivi === "Personne") note += 3;
   if (p.suivi === "Un conseiller, mais je ne suis pas convaincu") note += 3;
-  if (p.suivi === "Oui, et je cherche un deuxième avis") note += 2;
+  if (p.suivi === "Quelqu'un, et je cherche un deuxième avis") note += 2;
 
-  // Urgence
-  if (p.echeance && p.echeance !== "Rien de précis, mais ça traîne depuis trop longtemps") note += 3;
-
-  // Conscience du coût
-  if (p.cout === "Plus de 30 000 € par an") note += 3;
-  if (p.cout === "Entre 10 000 et 30 000 € par an") note += 2;
-  if (p.cout === "Rien du tout, je veux juste une vérification") note -= 1;
-
-  // Historique
-  if (p.tentative === "J'ai déjà été accompagné, et ça n'a rien donné") {
-    alertes.push("Déjà déçu par un accompagnement : insister sur le livrable écrit et les verrous.");
-  }
-  if (p.tentative === "J'ai été démarché, mais on voulait me vendre un produit") {
-    alertes.push("Méfiance produit : ouvrir sur les trois verrous, aucun produit maison.");
-  }
-  if (p.tentative === "J'en ai parlé à mon expert-comptable, sans suite concrète") {
-    alertes.push("Objection reine probable : préparer la scène tripartite.");
-  }
-
-  if (p.composition === "Je ne sais pas exactement") {
-    alertes.push("Ne sait pas comment sa rémunération se compose : forte valeur pédagogique.");
-  }
+  // Déclencheurs
+  if (p.declencheurs.includes("projet")) note += 3;
+  if (p.declencheurs.includes("banque")) note += 2;
+  if (p.declencheurs.includes("plafond")) note += 2;
+  if (p.declencheurs.includes("holding")) note += 1;
   if (p.declencheurs.length >= 3) note += 1;
 
-  // L'écart entre ce qu'il se verse et ce qu'il voudrait : le signal d'achat le plus fort.
-  if (p.souhait === "Beaucoup plus, ma rémunération n'a rien à voir avec ce que produit la société") {
-    note += 4;
-    alertes.push("Écart perçu très fort entre production et rémunération : levier d'ouverture évident.");
+  // Position de l'expert-comptable : frein actif potentiel, à traiter en amont.
+  if (p.comptable === "Il risque de freiner") {
+    note -= 1;
+    alertes.push("Expert-comptable identifié comme frein : ouvrir sur le triple manque (temps, vision perso, revoyure), jamais sur le reproche.");
   }
-  if (p.souhait === "Nettement plus, de l'ordre de 1 000 à 2 000 € par mois") note += 3;
-  if (p.souhait === "Un peu plus, quelques centaines d'euros par mois") note += 1;
-  if (p.souhait === "Je ne cherche pas à me verser plus, je cherche à mieux protéger ce que j'ai") {
-    alertes.push("Entrée par la protection, pas par le montant : ouvrir sur la prévoyance et la famille.");
+  if (p.comptable === "Il serait favorable à ce qu'on regarde") note += 1;
+  if (p.comptable === "Je ne compte pas lui en parler tout de suite") {
+    alertes.push("Ne veut pas en parler à son expert-comptable : rassurer sur le fait que Cap. ne touche à aucune de ses prérogatives.");
   }
 
-  const temperature = note >= 8 ? "CHAUD" : note >= 4 ? "TIÈDE" : note >= 0 ? "FROID" : "HORS CIBLE";
+  const temperature = note >= 9 ? "CHAUD" : note >= 5 ? "TIÈDE" : note >= 0 ? "FROID" : "HORS CIBLE";
   return { note, temperature, alertes };
 }
 
@@ -158,6 +148,61 @@ async function envoyerCopie({ titre, description, p, temperature, identite }) {
   }
 }
 
+// —— systeme.io : création du contact et pose du tag qui arme la séquence. Silencieux si non configuré. ——
+async function pousserSystemeIo(p, horsCible) {
+  const cle = (process.env.SYSTEME_IO_API_KEY || "").trim();
+  if (!cle) {
+    console.warn("[cap] SYSTEME_IO_API_KEY absente — contact non poussé dans systeme.io.");
+    return { ok: false, raison: "non configuré" };
+  }
+  const tagVoulu = (horsCible ? process.env.SYSTEME_IO_TAG_HORS_CIBLE : process.env.SYSTEME_IO_TAG) || (horsCible ? "cap-hors-cible" : "cap-lead");
+  const entetes = { "Content-Type": "application/json", "X-API-Key": cle };
+  const base = "https://api.systeme.io/api";
+
+  try {
+    // 1. Contact (création, ou récupération si l'email existe déjà)
+    let id = null;
+    const r = await fetch(`${base}/contacts`, {
+      method: "POST",
+      headers: entetes,
+      body: JSON.stringify({
+        email: p.email,
+        locale: "fr",
+        fields: [
+          { slug: "first_name", value: p.prenom },
+          { slug: "surname", value: p.nom },
+          { slug: "phone_number", value: p.telephone },
+          { slug: "company_name", value: p.societe },
+        ].filter((f) => f.value),
+      }),
+    });
+    if (r.ok) {
+      id = (await r.json())?.id ?? null;
+    } else if (r.status === 422 || r.status === 409) {
+      const q = await fetch(`${base}/contacts?email=${encodeURIComponent(p.email)}`, { headers: entetes });
+      if (q.ok) id = (await q.json())?.items?.[0]?.id ?? null;
+    } else {
+      console.error("[cap] systeme.io a refusé le contact :", r.status, await r.text());
+    }
+    if (!id) return { ok: false, raison: "contact introuvable" };
+
+    // 2. Tag : recherche par nom, puis pose
+    const t = await fetch(`${base}/tags?limit=100`, { headers: entetes });
+    const tags = t.ok ? (await t.json())?.items || [] : [];
+    const tag = tags.find((x) => (x.name || "").toLowerCase() === tagVoulu.toLowerCase());
+    if (!tag) {
+      console.error(`[cap] tag systeme.io « ${tagVoulu} » introuvable : créez-le dans systeme.io, le contact est créé sans tag.`);
+      return { ok: true, tag: false };
+    }
+    const a = await fetch(`${base}/contacts/${id}/tags`, { method: "POST", headers: entetes, body: JSON.stringify({ tagId: tag.id }) });
+    if (!a.ok) console.error("[cap] systeme.io a refusé le tag :", a.status, await a.text());
+    return { ok: true, tag: a.ok };
+  } catch (e) {
+    console.error("[cap] systeme.io injoignable :", e);
+    return { ok: false, raison: "injoignable" };
+  }
+}
+
 export async function POST(request) {
   console.log(
     "[cap] /api/lead appelée · noCRM:",
@@ -195,6 +240,9 @@ export async function POST(request) {
     email: txt(d?.email),
     telephone: txt(d?.telephone),
     precision: txt(d?.precision),
+    comptable: txt(d?.comptable),
+    origine: txt(d?.origine),
+    eventID: txt(d?.eventID),
   };
 
   if (!p.email || !p.email.includes("@")) {
@@ -213,41 +261,30 @@ export async function POST(request) {
     `Température : ${temperature} (score ${note})`,
     dominant ? `Ouvrir par : « ${ACCROCHES[dominant]} »` : "Ouvrir par : aucun déclencheur dominant, faire parler d'abord.",
     "",
-    "Sa situation en une phrase (déjà validée par lui à l'écran de confirmation) :",
+    "Sa situation en une phrase :",
     "  " + phraseRecap(p),
     "",
-    p.reussite ? `Son critère de réussite à lui : « ${p.reussite} »` : "Critère de réussite : non renseigné, à faire formuler en séance.",
-    p.echeance ? `Échéance : ${p.echeance}` : "",
     alertes.length ? "" : null,
     ...(alertes.length ? ["Points d'attention :", ...alertes.map((a) => "  · " + a)] : []),
     "",
     "———— CE QUI L'AMÈNE ————",
     ...(p.declencheurs.length ? p.declencheurs.map((k) => "  · " + TEXTES[k]) : ["  · non renseigné"]),
-    `Coût estimé par lui : ${p.cout || "non renseigné"}`,
-    `Ce qu'il voudrait se verser : ${p.souhait || "non renseigné"}`,
-    ...Object.entries(p.conditionnelles)
-      .filter(([, v]) => v)
-      .map(([id, v]) => {
-        const q = Object.values(CONDITIONNELLES).find((c) => c.id === id);
-        return "  · " + (q ? q.label : id) + " → " + v;
-      }),
-    `Déjà tenté : ${p.tentative || "non renseigné"}`,
     p.precision ? `À savoir : ${p.precision}` : "",
     "",
     "———— SA SITUATION ————",
     `Rémunération annuelle (salaire + dividendes) : ${p.remuneration}`,
-    `Composition : ${p.composition}`,
     `Statut : ${p.statut}`,
     `Société : ${p.societe || "non renseignée"}`,
     `Chiffre d'affaires : ${p.ca}`,
     `Quelqu'un s'en occupe aujourd'hui : ${p.suivi}`,
+    `Position de l'expert-comptable : ${p.comptable || "non renseignée"}`,
     "",
     "———— CONTACT ————",
     `Nom : ${identite}`,
     `E-mail : ${p.email}`,
     `Téléphone : ${p.telephone}`,
     "",
-    "Source : landing Cap. (cap.arras-patrimoine.fr)",
+    `Source : landing Cap. (cap.arras-patrimoine.fr)${p.origine ? " · bouton " + p.origine : ""}`,
   ]
     .filter((l) => l !== "" && l !== null)
     .join("\n");
@@ -259,13 +296,14 @@ export async function POST(request) {
     .replace(/\/$/, "");
   const cle = (process.env.NOCRM_API_KEY || "").trim();
 
-  // La copie mail part toujours, que noCRM réponde ou non.
+  // La copie mail et systeme.io partent toujours, que noCRM réponde ou non.
   const copie = envoyerCopie({ titre, description, p, temperature, identite });
+  const sio = pousserSystemeIo(p, temperature === "HORS CIBLE");
 
   if (!sousDomaine || !cle) {
     console.warn("[cap] noCRM non configuré — lead journalisé :", titre);
     console.warn(description);
-    await copie;
+    await Promise.all([copie, sio]);
     return Response.json({ ok: true, mode: "journal" });
   }
 
@@ -276,7 +314,7 @@ export async function POST(request) {
       body: JSON.stringify({
         title: titre,
         description,
-        tags: ["CAP", "landing", temperature, p.statut, dominant ? "declencheur:" + dominant : null].filter(Boolean),
+        tags: ["CAP", "landing", temperature, p.statut, dominant ? "declencheur:" + dominant : null, p.comptable ? "comptable:" + p.comptable : null].filter(Boolean),
         client: {
           name: identite,
           first_name: p.prenom,
@@ -290,22 +328,23 @@ export async function POST(request) {
     if (!r.ok) {
       console.error("[cap] noCRM a refusé le lead :", r.status, await r.text());
       console.error(description);
-      const m = await copie;
-      return Response.json({ ok: true, mode: "journal", mail: m.ok });
+      const [m, si] = await Promise.all([copie, sio]);
+      return Response.json({ ok: true, mode: "journal", mail: m.ok, systemeio: si.ok });
     }
-    const m = await copie;
-    return Response.json({ ok: true, mode: "nocrm", mail: m.ok });
+    const [m, si] = await Promise.all([copie, sio]);
+    return Response.json({ ok: true, mode: "nocrm", mail: m.ok, systemeio: si.ok });
   } catch (e) {
     console.error("[cap] noCRM injoignable :", e);
     console.error(description);
-    const m = await copie;
-    return Response.json({ ok: true, mode: "journal", mail: m.ok });
+    const [m, si] = await Promise.all([copie, sio]);
+    return Response.json({ ok: true, mode: "journal", mail: m.ok, systemeio: si.ok });
   }
 }
 
 // —— Diagnostic : ouvrir https://cap.arras-patrimoine.fr/api/lead dans le navigateur. ——
 // Ne révèle aucune valeur, seulement la présence des variables.
 export async function GET(request) {
+  const systemeio = !!(process.env.SYSTEME_IO_API_KEY || "").trim();
   const brute = process.env.NOCRM_API_KEY || "";
   const cle = brute.trim();
   const sous = (process.env.NOCRM_SUBDOMAIN || "")
@@ -342,8 +381,11 @@ export async function GET(request) {
 
   return Response.json({
     route: "opérationnelle",
-    version: "v5",
+    version: "v6-tunnel-meta",
     variables: {
+      SYSTEME_IO_API_KEY: systemeio ? "présente" : "manquante (séquence mail non armée)",
+      SYSTEME_IO_TAG: process.env.SYSTEME_IO_TAG || "défaut : cap-lead",
+      NEXT_PUBLIC_META_PIXEL_ID: process.env.NEXT_PUBLIC_META_PIXEL_ID ? "présent" : "manquant (aucune mesure Meta)",
       NOCRM_API_KEY: process.env.NOCRM_API_KEY ? "présente" : "MANQUANTE",
       NOCRM_SUBDOMAIN: process.env.NOCRM_SUBDOMAIN || "MANQUANTE",
       RESEND_API_KEY: process.env.RESEND_API_KEY ? "présente" : "manquante (copie mail désactivée)",

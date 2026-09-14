@@ -1,819 +1,409 @@
-import Fx from "../components/Fx";
+"use client";
+import { useCallback, useState } from "react";
 import Video from "../components/Video";
-import HeroForm from "../components/HeroForm";
-import Formulaire from "../components/Formulaire";
-import BarreFlottante from "../components/BarreFlottante";
-import { FigCalendrier, Repetition } from "../components/Figures";
-import { Progression, Sommaire } from "../components/Chrome";
-import { SCENES, LIVRABLES, AVIS, FAQ, PRENONS, REFUSONS, CAS, NOTE_GOOGLE } from "../components/donnees";
-import { jsonLd } from "../components/jsonld";
-
-const CAL = process.env.NEXT_PUBLIC_CAL_URL || "https://cal.com/arras-patrimoine/decouverte-rem";
+import Quiz from "../components/Quiz";
+import Effets from "../components/Effets";
+import Collant from "../components/Collant";
+import MurAvis from "../components/MurAvis";
 
 export default function Page() {
+  const [quiz, setQuiz] = useState(false);
+  const [origine, setOrigine] = useState("");
+  const ouvrir = useCallback((o) => { setOrigine(o); setQuiz(true); }, []);
+  const fermer = useCallback(() => setQuiz(false), []);
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <Fx />
-      <Progression />
-      <Sommaire
-        entrees={[
-          ["constat", "Le constat"],
-          ["scenes", "Vous reconnaîtrez"],
-          ["perimetres", "Le problème"],
-          ["methode", "La méthode"],
-          ["preuve", "La preuve"],
-          ["selectivite", "Sélectivité"],
-          ["dossier", "Ouvrir mon dossier"],
-        ]}
-      />
-
+      <Effets />
+      <div className="fond" aria-hidden="true" />
       <div className="page">
-        <header className="entete-site">
-          <div className="wrap">
-            <div style={{ display: "flex", alignItems: "baseline" }}>
-              <span className="wordmark wordmark--nav">
-                Cap<span className="pt">.</span>
-              </span>
-              <span className="par">C&apos;est pas compliqué, juste mal expliqué.</span>
-            </div>
-            <a className="btn btn--primaire" href="#dossier" data-ev="cta_header">
-              Voir si mon dossier passe <span className="fl">→</span>
-            </a>
+      <header className="entete">
+          <div className="in">
+            <span className="wordmark">Cap<span className="pt">.</span></span>
+            <nav className="u-nav">
+              <a href="#fondateur">L'équipe</a>
+              <a href="#methode">Méthode</a>
+              <a href="#leviers">Ce qu'on rouvre</a>
+              <a href="#dossiers">Dossiers</a>
+              <a href="#faq">FAQ</a>
+            </nav>
+            <button className="btn btn--primaire" onClick={() => ouvrir("entete")}><span className="u-long">Faire examiner mon dossier</span><span className="u-court">Mon dossier</span></button>
           </div>
         </header>
 
-        {/* 01 · HERO */}
-        <section className="hero">
-          <div className="wrap hero-grid">
-            <div>
-              <div className="pour-qui reveal">
-                <i>✓</i> Pour les dirigeants de PME entre <b>150 k€ et 5 M€</b> de chiffre d&apos;affaires
+        {/* ①  HERO */}
+        <section className="hero" id="hero">
+          <div className="wrap">
+            <div className="hero-grid">
+              <div className="hero-txt">
+                <div className="pour-qui"><i>✓</i> Dirigeants de PME · à partir de 350 k€ de chiffre d'affaires</div>
+                <h1>Vous décidez de tout dans votre boîte.<br /><span className="surligne">Sauf de ce que vous gagnez.</span></h1>
+                <p className="promesse">Cap. chiffre ce que vous coûte réellement chaque euro que vous vous versez, projette au minimum trois architectures de rémunération sur votre dossier réel, et vous rend la décision. Trente jours.</p>
               </div>
-              <h1 className="reveal">
-                Vous vous payez sûrement <span className="rose">plus cher que nécessaire</span>.
-              </h1>
-              <p className="promesse reveal">
-                Cap. audite la façon dont vous vous rémunérez, arbitre avec vous, et vous remet
-                un plan écrit en <b>30 jours</b>. Ordre de grandeur constaté sur nos dossiers :{" "}
-                <b>20 à 30 000 € par an</b> récupérés, sans montage et sans produit à vous vendre.
-              </p>
-              <HeroForm />
-              <p className="hero-secondaire reveal">
-                Vous préférez en parler ?{" "}
-                <a href={CAL} data-ev="cta_cal_hero">Réservez 30 minutes avec Jérémy</a>, sans engagement.
-              </p>
-            </div>
 
-            <div className="hero-droite reveal">
-              <div style={{ position: "relative" }}>
+              <div className="u-lecteur">
                 <Video />
-                <div className="etiquette-video">
-                  <b>Jérémy Poutot</b>
-                  <span>Fondateur · juriste du patrimoine</span>
-                </div>
               </div>
-              <div className="preuves">
-                <div className="preuve"><b><span data-cible="30000" data-suffixe=" €">0 €</span></b><span>récupérés la 1ʳᵉ année sur un dossier récent</span></div>
-                <div className="preuve"><b><span data-cible="30">0</span> jours</b><span>du premier échange au plan signé</span></div>
-                <div className="preuve"><b><span data-cible="8">0</span></b><span>dossiers acceptés par mois, pas un de plus</span></div>
+
+              <div className="cta-zone hero-cta" style={{ marginTop: "0" }}>
+                <button className="btn btn--primaire btn--large" onClick={() => ouvrir("hero")}>Faire examiner mon dossier <span className="fl">→</span></button>
+                <p className="micro">100 % gratuit · sans engagement · réponse sous 24 h ouvrées</p>
               </div>
-              <a className="avis-mini" href={NOTE_GOOGLE.lien} target="_blank" rel="noopener noreferrer" data-ev="clic_avis_google">
-                <span className="note-g"><b>{NOTE_GOOGLE.note}</b><i>★</i></span>
-                <div>
-                  <p>{AVIS[0][0]}</p>
-                  <small>{AVIS[0][1]} · {NOTE_GOOGLE.nombre} avis Google, note moyenne {NOTE_GOOGLE.note}/{NOTE_GOOGLE.sur}</small>
-                </div>
-              </a>
+            </div>
+          </div>
+
+          <div className="u-bande" aria-label="Ce qu'on entend au premier appel">
+            <div className="u-defile">
+              <span>« Je facture 80 k par mois et je me paie 2 500 balles »</span><span>« Si je me paie plus, je vais me faire allumer par l'URSSAF »</span><span>« J'voulais regarder si c'était fiable »</span><span>« Personne me l'avait jamais montré comme ça »</span><span>« J'aurais dû faire ça il y a cinq ans »</span><span>« Je facture 80 k par mois et je me paie 2 500 balles »</span><span>« Si je me paie plus, je vais me faire allumer par l'URSSAF »</span><span>« J'voulais regarder si c'était fiable »</span><span>« Personne me l'avait jamais montré comme ça »</span><span>« J'aurais dû faire ça il y a cinq ans »</span>
             </div>
           </div>
         </section>
 
-        {/* 04 · LE CONSTAT */}
-        <section id="constat" data-cote="02" className="sombre">
+        {/* ②  LE SIÈGE VIDE */}
+        <section className="sombre" id="siege">
           <div className="wrap">
-            <div className="intro">
-              <div>
-                <span className="eyebrow reveal">Le constat</span>
-                <h2 className="reveal">
-              Votre rémunération n&apos;a jamais été décidée. Elle s&apos;est empilée.
-            </h2>
-              </div>
-              <p className="reponse reveal">
-              Chaque brique est correcte prise seule. L&apos;ensemble, personne ne l&apos;a jamais
-              regardé. Voilà comment ça se construit, dans neuf dossiers sur dix.
-            </p>
-            </div>
+            <span className="eyebrow">Le constat</span>
+            <h2 className="u-h2">Personne ne fait mal son travail autour de vous.<br />Personne n'a pour métier votre rémunération.</h2>
+            <p className="lead">Votre expert-comptable tient les comptes, la paie, le déclaratif. Il constate votre rémunération, il ne la conçoit pas. Votre banquier tient le crédit. Votre assureur tient les contrats. Chacun tient sa brique, et vos experts ne se sont jamais parlé. Entre eux, un siège reste vide : celui de la vision d'ensemble, pro et perso. Vous payez ce malentendu depuis des années.</p>
 
-            <div className="empilement reveal">
-              <div className="couche">
-                <span className="quand">Au démarrage</span>
-                <b>Un salaire fixé « pour commencer »</b>
-                <p>Calculé une fois, sur un coin de table, avec les charges de l&apos;époque. Jamais revu depuis.</p>
-              </div>
-              <div className="couche">
-                <span className="quand">À chaque clôture</span>
-                <b>Des dividendes votés au jugé</b>
-                <p>En fonction de ce qui reste et de l&apos;humeur de l&apos;expert-comptable, sans plan derrière.</p>
-              </div>
-              <div className="couche">
-                <span className="quand">Il y a huit ans</span>
-                <b>Une prévoyance signée un mardi</b>
-                <p>Un contrat qui couvre on ne sait plus quoi, et qu&apos;on paie encore tous les mois.</p>
-              </div>
-              <div className="couche">
-                <span className="quand">Depuis toujours</span>
-                <b>Un compte courant qu&apos;on ne regarde plus</b>
-                <p>De l&apos;argent prêté à votre propre société, qui ne vous rapporte rien.</p>
-              </div>
-              <div className="couche couche--total">
-                <span className="quand">Résultat</span>
-                <b>20 à 30 000 € par an qui partent dans les couloirs</b>
-                <p>Ni fraude, ni astuce, ni faute de personne. Juste un poste vacant : celui qui regarde l&apos;ensemble.</p>
-              </div>
-            </div>
-
-
-            <div className="cloisons reveal">
-              <p className="ct">Et pourtant, chacun de vos conseils fait bien son travail.</p>
-              <div className="cl-g">
-                <div><b>Expert-comptable</b><span>Ne voit pas votre foyer</span></div>
-                <div><b>Banquier</b><span>Ne voit pas la holding</span></div>
-                <div><b>Assureur</b><span>Ne voit pas l&apos;arbitrage</span></div>
-                <div><b>Notaire</b><span>Ne voit pas le flux</span></div>
-              </div>
-              <p className="cf">
-                L&apos;écart se creuse entre les quatre, là où personne n&apos;a le mandat de
-                regarder. <b>C&apos;est exactement la place que Cap. occupe.</b>
-              </p>
-            </div>
-            <div className="accroche reveal">
-              <p>Ce poste existe dans les grands groupes. Dans une PME, c&apos;est vous, le dimanche soir.</p>
+            <div className="u-siege">
+              <div className="u-brique"><b>L'expert-comptable</b><span>Constate et déclare. Regarde la société, jamais le foyer.</span></div>
+              <div className="u-brique"><b>Le banquier</b><span>Lit votre avis d'imposition, pas votre capacité réelle.</span></div>
+              <div className="u-brique u-brique--vide"><b>Le siège vide</b><span>Qui décide de la forme, de la source, du moment et du montant de ce que vous vous versez ? Personne.</span></div>
+              <div className="u-brique"><b>L'assureur</b><span>Distribue ses contrats. Ne relit jamais votre prévoyance.</span></div>
+              <div className="u-brique"><b>Le conseiller</b><span>Commence quand l'argent est déjà sorti.</span></div>
             </div>
           </div>
         </section>
 
-        {/* 05 · SCÈNES MIROIR */}
-        <section id="scenes" data-cote="03">
+        {/* ③  L'ÉQUIPE */}
+        <section id="fondateur">
           <div className="wrap">
-            <div className="intro">
-              <div>
-                <span className="eyebrow reveal">Vous reconnaîtrez peut-être</span>
-                <h2 className="reveal">Cinq phrases que nous entendons chaque semaine</h2>
+            <span className="eyebrow">Qui occupe le siège</span>
+            <h2 className="u-h2">Un ingénieur patrimonial et juriste.<br />Qui parle en dirigeant.</h2>
+
+            <figure className="u-equipe">
+              <img src="/equipe.jpg" alt="Jérémy Poutot, entouré de Manon et Marie-Amélie, à la table de séance du cabinet" loading="lazy" />
+              <figcaption>
+                <span className="u-eq-nom">Jérémy Poutot</span>
+                <span className="u-eq-role">Fondateur · ingénieur patrimonial et juriste du patrimoine</span>
+                <span className="u-eq-avec">Entouré de Manon, protection du dirigeant, et de Marie-Amélie, ingénierie et scénarios.</span>
+              </figcaption>
+            </figure>
+
+            <div className="u-fondateur">
+              <div className="u-fondateur-txt">
+                <h3 className="u-h3">Jérémy n'enseigne pas une méthode.<br />Il l'a construite dossier après dossier.</h3>
+                <p className="u-citation">« J'ai appris à regarder un dossier par ce qui peut casser, avant de regarder ce qu'il peut rapporter. Une architecture qui ne tient pas le jour d'un contrôle, d'un divorce ou d'un accident n'est pas une architecture. »</p>
+                <p>Deux masters en stratégies sociétaires et ingénierie patrimoniale, douze ans de pratique, plus de huit sociétés opérées en propre. Il lit à la fois vos statuts, votre bilan, votre prévoyance et votre régime matrimonial, et il vous parle comme un dirigeant parle à un dirigeant, pas comme un conseiller d'en haut. Sept ans de missions de stratégie de rémunération, plus de cent clients, sans une ligne de publicité.</p>
               </div>
-              <p className="reponse reveal">
-              Ces situations viennent de dossiers réels. Si l&apos;une d&apos;elles vous ressemble,
-              ce n&apos;est pas un hasard : ce sont les cinq configurations qui produisent le plus
-              d&apos;écart entre ce que vous pourriez récupérer et ce que vous récupérez vraiment.
-            </p>
-            </div>
-            <div className="reveal">
-              {SCENES.map((s, i) => (
-                <div className="scene" key={i}>
-                  <span className="idx">{String(i + 1).padStart(2, "0")}</span>
-                  <div>
-                    <p className="dit">{s.dit}</p>
-                    <p className="rep">{s.rep}</p>
-                  </div>
+              <div className="u-trio">
+                <div className="u-trio-item">
+                  <span className="u-trio-num">01</span>
+                  <b>Jérémy mène l'arbitrage</b>
+                  <p>C'est lui qui déroule les scénarios en séance, qui tranche ce qui est défendable de ce qui ne l'est pas, et qui signe le livrable.</p>
                 </div>
-              ))}
+                <div className="u-trio-item">
+                  <span className="u-trio-num">02</span>
+                  <b>Marie-Amélie bâtit les scénarios</b>
+                  <p>Elle ouvre les liasses, chiffre chaque architecture jusqu'à l'euro et reste votre interlocutrice pendant les trente jours. C'est elle qui trouve la ligne qui manque.</p>
+                </div>
+                <div className="u-trio-item">
+                  <span className="u-trio-num">03</span>
+                  <b>Manon tient la protection</b>
+                  <p>Prévoyance, retraite, couverture du conjoint. Ce que l'architecture doit sécuriser avant de parler de ce qu'elle peut rapporter.</p>
+                </div>
+              </div>
             </div>
 
-            <div className="barre-cta reveal">
-              <p>Une de ces phrases est la vôtre ?</p>
-              <a className="btn btn--primaire" href="#dossier" data-ev="cta_scenes">
-                Voir si mon dossier passe <span className="fl">→</span>
-              </a>
-              <span>3 questions, aucune coordonnée</span>
+            <div className="u-cotes" id="cotes">
+              <div className="u-cote"><b data-n="12">0</b><span>ans de pratique<br />auprès de dirigeants</span></div>
+              <div className="u-cote"><b data-n="100" data-suffixe="+">0</b><span>clients en stratégie<br />de rémunération</span></div>
+              <div className="u-cote"><b data-n="8">0</b><span>experts salariés<br />au cabinet</span></div>
+              <div className="u-cote"><b data-n="15">0</b><span>experts externes<br />mobilisables</span></div>
+              <div className="u-cote"><b data-n="3">0</b><span>scénarios chiffrés<br />au minimum</span></div>
             </div>
           </div>
         </section>
 
-        {/* 07 · OBJECTION REINE */}
-        <section data-cote="05">
+        {/* ④  MÉTHODE */}
+        <section className="sombre" id="methode">
+          <div className="wrap">
+            <span className="eyebrow">La méthode</span>
+            <h2 className="u-h2">Trois temps. Zéro théorie.</h2>
+            <p className="lead">Trente jours à compter de la réception de vos pièces. Trois à quatre heures de votre temps. Tout en visio, où que vous soyez. Et à la fin, ce n'est pas nous qui choisissons : là où d'autres vendent une solution, Cap. vous rend la capacité de choisir.</p>
+
+            <div className="u-plan" id="plan">
+              <div className="u-plan-regle" aria-hidden="true">
+                <span className="u-plan-trait"><i /></span>
+                <span className="u-plan-j" style={{ left: "0%" }}>J 1</span>
+                <span className="u-plan-j" style={{ left: "33.3%" }}>J 10</span>
+                <span className="u-plan-j" style={{ left: "66.6%" }}>J 20</span>
+                <span className="u-plan-j" style={{ left: "100%" }}>J 30</span>
+              </div>
+
+              <div className="u-plan-temps">
+                <article className="u-temps">
+                  <span className="u-temps-num">01</span>
+                  <span className="u-temps-role">Le pré-audit · jours 1 à 10</span>
+                  <h3>Votre situation, éclairée</h3>
+                  <p>Une heure avec Jérémy pour comprendre comment vous fonctionnez, pro et perso. Puis vos pièces, et sous 96 heures un call de confirmation : ce que vous avez dit, ce que montrent vos documents, et ce dont vous avez besoin, mis en concordance.</p>
+                  <span className="u-temps-sortie">Vous recevez <b>la cartographie de votre enveloppe</b></span>
+                </article>
+                <article className="u-temps">
+                  <span className="u-temps-num">02</span>
+                  <span className="u-temps-role">Les projections · jours 11 à 20</span>
+                  <h3>Trois architectures, chiffrées</h3>
+                  <p>Au minimum trois scénarios d'architecture de rémunération, projetés sur votre dossier réel. Pour chacun, ce que ça coûte, ce que ça protège, ce que ça permet côté foyer et côté société. Du droit positif, des dispositifs existants, rien qui ne s'assume devant l'administration.</p>
+                  <span className="u-temps-sortie">Vous recevez <b>les scénarios et leurs conséquences</b></span>
+                </article>
+                <article className="u-temps u-temps--fin">
+                  <span className="u-temps-num">03</span>
+                  <span className="u-temps-role">La décision · jours 21 à 30</span>
+                  <h3>Vous choisissez. Vos conseils appliquent.</h3>
+                  <p>Un call de validation pour conforter le scénario que vous retenez et projeter la suite. Le livrable cite ses références légales, et il est remis à votre expert-comptable avec de quoi exécuter. Vous devez pouvoir défendre chaque ligne vous-même.</p>
+                  <span className="u-temps-sortie u-temps-sortie--fin">Vous recevez <b>votre stratégie, écrite et référencée</b></span>
+                </article>
+              </div>
+            </div>
+
+            <div className="u-engagements">
+              <b>Ce qui est écrit dans la lettre de mission</b>
+              <div>
+                <p>Au minimum trois scénarios d'architecture chiffrés sur votre dossier réel.</p>
+                <p>Livrés sous trente jours à compter du dossier complet.</p>
+                <p>Un périmètre défini noir sur blanc, une responsabilité civile professionnelle derrière.</p>
+              </div>
+              <small>Pas de miracle remboursable. Des engagements écrits sur ce que vous recevez, comme toute profession sérieuse.</small>
+            </div>
+
+            <div className="cta-zone">
+              <button className="btn btn--primaire" onClick={() => ouvrir("methode")}>Faire examiner mon dossier <span className="fl">→</span></button>
+              <p className="micro">100 % gratuit · sans engagement</p>
+            </div>
+          </div>
+        </section>
+
+        {/* ⑤  LES QUATRE DÉCISIONS */}
+        <section id="leviers">
+          <div className="wrap">
+            <span className="eyebrow">Ce qu'on rouvre</span>
+            <h2 className="u-h2">Quatre décisions.<br />Que personne ne prend à votre place.</h2>
+            <p className="lead">Pas une formation. Pas de la théorie. Quatre décisions qui fixent à elles seules le coût de chaque euro que vous vous versez, et qu'aucun de vos conseils n'a pour métier de regarder ensemble.</p>
+
+            <div className="u-poles">
+              <div className="u-pole">
+                <div className="u-pole-visuel u-pole-visuel--forme" aria-hidden="true">
+                  <span className="u-porte"></span><span className="u-porte"></span><span className="u-porte u-porte--on"></span><span className="u-porte"></span><span className="u-porte"></span>
+                </div>
+                <div className="u-pole-txt">
+                  <span className="u-num">01</span>
+                  <h3>La forme</h3>
+                  <p>Salaire, dividende, compte courant, frais, avantage en nature. Le même montant ne coûte pas la même chose selon la porte qu'il emprunte. Vous n'avez probablement jamais vu les cinq côte à côte.</p>
+                </div>
+              </div>
+              <div className="u-pole">
+                <div className="u-pole-visuel u-pole-visuel--source" aria-hidden="true">
+                  <span className="u-etage">SCI</span><span className="u-etage u-etage--on">Holding</span><span className="u-etage">Exploitation</span>
+                </div>
+                <div className="u-pole-txt">
+                  <span className="u-num">02</span>
+                  <h3>La source</h3>
+                  <p>Exploitation, holding, SCI. Selon l'étage d'où part l'argent, il est taxé une fois, deux fois, ou pas au passage. La plupart des holdings ne servent pas ce qu'elles pourraient.</p>
+                </div>
+              </div>
+              <div className="u-pole">
+                <div className="u-pole-visuel u-pole-visuel--moment" aria-hidden="true">
+                  <span className="u-mois">DÉC</span><span className="u-mois u-mois--on">MARS</span><span className="u-mois">JUIN</span>
+                </div>
+                <div className="u-pole-txt">
+                  <span className="u-num">03</span>
+                  <h3>Le moment</h3>
+                  <p>Un dividende voté en décembre et le même voté en mars ne font pas le même effet sur votre foyer. Le calendrier est le levier le moins cher et le moins utilisé.</p>
+                </div>
+              </div>
+              <div className="u-pole">
+                <div className="u-pole-visuel u-pole-visuel--montant" aria-hidden="true">
+                  <span className="u-barre" style={{ height: "30%" }}></span><span className="u-barre" style={{ height: "52%" }}></span><span className="u-barre u-barre--on" style={{ height: "74%" }}></span><span className="u-barre u-barre--rouge" style={{ height: "96%" }}></span>
+                </div>
+                <div className="u-pole-txt">
+                  <span className="u-num">04</span>
+                  <h3>Le montant</h3>
+                  <p>Combien vous pouvez sortir sans mettre la société en risque, et ce que coûtent réellement 1 000 € nets de plus dans votre architecture actuelle. La question que tout le monde se pose et que personne ne chiffre.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ⑥  DOSSIERS */}
+        <section className="sombre" id="dossiers">
+          <div className="wrap">
+            <span className="eyebrow">Mesuré sur nos dossiers</span>
+            <h2 className="u-h2">Des décisions. Pas des promesses.</h2>
+            <p className="lead">Trois dossiers livrés, anonymisés en typologies. Ce sont des projections à droit constant, sur dossiers réels, sans valeur d'engagement. Aucun nom, aucune ville, aucun montant qui identifie.</p>
+
+            <div className="u-dossiers">
+              <article className="u-dossier">
+                <span className="u-dossier-type">L'architecte</span>
+                <p className="u-dossier-avant">Profession libérale, société seule. Une rémunération installée au départ et jamais rouverte, un prélèvement global de 38 % sur les flux.</p>
+                <div className="u-dossier-mesure">
+                  <b>38 % <i>→</i> 21 %</b>
+                  <span>de prélèvement global sur les flux, à droit constant</span>
+                </div>
+                <div className="u-dossier-lignes">
+                  <div><span>Revenu net disponible, première année</span><b>29 900 € → 44 100 €</b></div>
+                  <div><span>Puis en régime de croisière</span><b>59 800 €</b></div>
+                  <div><span>Ce que sa holding capitalise chaque année</span><b>27 700 €</b></div>
+                </div>
+                <p className="u-dossier-chute">Honoraires de mission 8 900 € HT. Écart de première année 14 200 €. La mission s'est amortie dans l'année.</p>
+              </article>
+
+              <article className="u-dossier">
+                <span className="u-dossier-type">Le groupe multi-sociétés</span>
+                <p className="u-dossier-avant">Plusieurs sociétés, un besoin de vie de 150 000 € par an, et une architecture qui avait survécu à la croissance. Même montant à sortir, plusieurs façons de le faire sortir.</p>
+                <div className="u-dossier-mesure">
+                  <b>+ 41 000 €</b>
+                  <span>de valeur économique par an entre la moins bonne et la meilleure des architectures projetées</span>
+                </div>
+                <div className="u-dossier-lignes">
+                  <div><span>Coût employeur, pour le même besoin de vie</span><b>35 000 € de moins</b></div>
+                  <div><span>Écart de patrimoine constitué, projeté sur dix ans</span><b>900 000 €</b></div>
+                  <div><span>De 2,9 millions à</span><b>3,8 millions</b></div>
+                </div>
+                <p className="u-dossier-chute">L'architecture compte plus que le montant.</p>
+              </article>
+
+              <article className="u-dossier">
+                <span className="u-dossier-type">Le repreneur de 26 ans</span>
+                <p className="u-dossier-avant">Une reprise, zéro flux organisé. Marque non déposée, crédit-vendeur non formalisé, tout à construire avant de décider quoi que ce soit.</p>
+                <div className="u-dossier-mesure">
+                  <b>≈ 688 000 €</b>
+                  <span>de capitalisation de groupe projetée à cinq ans, à partir de quatre canaux de revenu organisés</span>
+                </div>
+                <div className="u-dossier-lignes">
+                  <div><span>Canaux de revenu, de zéro à</span><b>quatre</b></div>
+                  <div><span>Le seul choix du débiteur d'une redevance de marque, sur la durée du plan</span><b>19 000 €</b></div>
+                </div>
+                <p className="u-dossier-chute">La granularité fait la différence. Un détail de structure pèse cinq chiffres.</p>
+              </article>
+            </div>
+
+            <div className="u-fourchette">
+              <b>Sur nos dossiers livrés</b>
+              <p>L'écart mesuré entre l'architecture en place et le scénario retenu va de 14 000 € à plus de 40 000 € par an, de l'ordre de 25 000 € par an en moyenne. Réutilisables au choix du dirigeant : en croissance de la société, en capitalisation patrimoniale, ou en revenu.</p>
+            </div>
+
+            <div className="cta-zone">
+              <button className="btn btn--primaire" onClick={() => ouvrir("dossiers")}>Faire examiner mon dossier <span className="fl">→</span></button>
+              <p className="micro">100 % gratuit · sans engagement</p>
+            </div>
+          </div>
+        </section>
+
+        {/* ⑦  DIAGNOSTIC */}
+        <section className="u-diag">
+          <div className="wrap wrap--etroit" style={{ textAlign: "center" }}>
+            <span className="eyebrow" style={{ justifyContent: "center" }}>Le diagnostic</span>
+            <h2 className="u-h2">Votre dossier passe-t-il chez nous ?</h2>
+            <p className="lead" style={{ marginInline: "auto" }}>3 questions. 60 secondes. Une réponse franche sur votre situation, et sur ce qui bloque.</p>
+            <button className="btn btn--primaire btn--large" onClick={() => ouvrir("diag")} style={{ marginTop: ".6em" }}>Commencer le diagnostic <span className="fl">→</span></button>
+            <p className="micro" style={{ marginTop: "1em" }}>100 % gratuit · sans engagement</p>
+          </div>
+        </section>
+
+        {/* ⑧  LE TRI */}
+        <section className="sombre" id="cabinet">
+          <div className="wrap">
+            <span className="eyebrow">Le cabinet</span>
+            <h2 className="u-h2">On trie dès le départ.<br />Ce qu'on prend, ce qu'on ne prend pas.</h2>
+            <p className="lead">Un dossier ne se perd pas dans un service. Il est lu, accepté ou refusé avant la première heure de travail, puis il passe entre trois personnes identifiées, dans un ordre qui ne change jamais.</p>
+
+            <div className="u-flux">
+              <div className="u-flux-etape">
+                <span className="u-flux-quand">Sous 24 h ouvrées</span>
+                <b>Votre fiche est lue, puis triée</b>
+                <p>Par un humain. Elle nous dit si le sujet existe chez vous et par où on commencerait. Si le dossier ne relève pas de nous, on vous le dit tout de suite, avec ce qu'il faudrait regarder à la place.</p>
+              </div>
+              <div className="u-flux-etape">
+                <span className="u-flux-quand">25 minutes</span>
+                <b>Un premier échange, pas une démo</b>
+                <p>Vous dites comment vous vous rémunérez aujourd'hui. On vous dit ce qu'on voit. Si la réponse est non, vous l'entendrez pendant l'appel, pas après avoir signé.</p>
+              </div>
+              <div className="u-flux-etape">
+                <span className="u-flux-quand">96 h après vos pièces</span>
+                <b>Le pré-audit confirmé</b>
+                <p>On vérifie que ce que vous nous avez dit, ce que disent vos documents et ce dont vous avez besoin sont bien la même chose. C'est là que les trente jours commencent.</p>
+              </div>
+              <div className="u-flux-etape u-flux-etape--fin">
+                <span className="u-flux-quand">Jour 30</span>
+                <b>Votre stratégie, et un dernier appel</b>
+                <p>Vous recevez le livrable. On le relit ensemble, ligne à ligne, pour que vous puissiez le défendre seul devant qui que ce soit. Et on ne vous lâche pas dans la nature : la mise en place se poursuit avec vos conseils, ou avec nous si vous le souhaitez.</p>
+              </div>
+            </div>
+
+            <div className="u-tri">
+              <div className="u-tri-col u-tri--oui">
+                <b>On prend</b>
+                <p>Une société qui tourne, au-delà de 350 000 € de chiffre d'affaires, et qui a la capacité de financer une véritable enveloppe dirigeant.</p>
+                <p>Un dirigeant qui se verse déjà quelque chose, même beaucoup trop peu par rapport à ce que sa boîte permet.</p>
+                <p>Un groupe, une holding, une SCI, ou le projet d'en construire un.</p>
+                <p>Quelqu'un qui veut comprendre ses scénarios et arbitrer lui-même.</p>
+              </div>
+              <div className="u-tri-col u-tri--non">
+                <b>On ne prend pas</b>
+                <p>Une société sans capacité, en survie de trésorerie. Le sujet est le redressement, pas la rémunération.</p>
+                <p>Un dirigeant qui veut qu'on décide à sa place. Cap. rend l'arbitrage, il ne le confisque pas.</p>
+                <p>Celui qui veut zéro charges comme fin en soi, sans projet derrière.</p>
+                <p>Toute demande d'artifice plutôt que d'architecture assumable devant l'administration.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <MurAvis />
+
+      {/* ⑩  CTA FINAL */}
+        <section className="sombre u-final">
+          <div className="wrap wrap--etroit" style={{ textAlign: "center" }}>
+            <h2 className="u-h2">Vous savez où vous en êtes.<br />Maintenant, décidez comment vous vous payez.</h2>
+            <button className="btn btn--primaire btn--large" onClick={() => ouvrir("final")} style={{ marginTop: ".8em" }}>Faire examiner mon dossier <span className="fl">→</span></button>
+            <p className="micro" style={{ marginTop: "1em" }}>100 % gratuit · sans engagement · on vous dit non si ce n'est pas pour vous</p>
+          </div>
+        </section>
+
+        {/* ⑪  FAQ */}
+        <section id="faq">
           <div className="wrap wrap--etroit">
-            <div className="intro">
-              <div>
-                <span className="eyebrow reveal">L&apos;objection</span>
-                <h2 className="reveal">« Mon expert-comptable dit qu&apos;on ne peut pas faire mieux »</h2>
-              </div>
-              <p className="reponse reveal">
-              C&apos;est la phrase que nous entendons le plus, et elle mérite mieux qu&apos;une
-              réponse commerciale. Votre expert-comptable dit vrai dans son périmètre. Nous ne
-              travaillons pas dans son périmètre, et nous ne travaillons jamais contre lui : nous lui
-              apportons une vue qu&apos;il n&apos;a pas, et il valide.
-            </p>
-            </div>
-            <p className="reveal">
-              Voilà comment ça se passe concrètement, parce que c&apos;est arrivé des dizaines de
-              fois. Nous construisons le plan, puis nous demandons un rendez-vous à trois : vous,
-              votre expert-comptable, nous. Nous posons le schéma sur la table et nous le déroulons
-              devant lui, chiffres et textes à l&apos;appui.
-            </p>
-            <p className="reveal">
-              Dans l&apos;immense majorité des cas, il valide. Et très souvent il ajoute une phrase
-              qui vaut tout le reste : il n&apos;aurait pas pu vous le proposer lui-même, parce
-              qu&apos;il ne voit qu&apos;une société quand le plan en fait travailler trois, parce
-              que son mandat s&apos;arrête à la porte de votre foyer, et parce qu&apos;il n&apos;a
-              matériellement pas le temps de refaire cette analyse pour chacun de ses clients.
-            </p>
-            <p className="reveal">
-              Ce rendez-vous n&apos;est pas une confrontation, c&apos;est une passation. Vous
-              ressortez avec un plan validé par les deux, et votre expert-comptable ressort avec les
-              écritures à passer. Personne ne perd sa place. Si vous n&apos;avez pas envie de ce
-              rendez-vous, nous vous remettons simplement le dossier et vous le transmettez
-              vous-même.
-            </p>
-          </div>
-        </section>
-
-        {/* 08 · STRATÉGIE VS MONTAGE */}
-        <section data-cote="06" className="sombre">
-          <div className="wrap">
-            <div className="intro">
-              <div>
-                <span className="eyebrow reveal">La différence qui compte</span>
-                <h2 className="reveal">Une stratégie de rémunération n&apos;est pas un montage</h2>
-              </div>
-              <p className="reponse reveal">
-              Un montage est une construction qu&apos;on installe pour obtenir un effet, et
-              qu&apos;on défend ensuite si on vous la conteste. Une stratégie de rémunération est une
-              suite de décisions ordinaires, chacune parfaitement banale prise seule, dont
-              l&apos;ordre et la combinaison produisent un résultat très différent. La première se
-              démonte. La seconde s&apos;explique.
-            </p>
-            </div>
-            <div className="grille-2 reveal" style={{ marginTop: "2.4rem" }}>
-              <div className="fiche fiche--neutre">
-                <span className="num">Ce que nous ne faisons pas</span>
-                <h3>Le montage</h3>
-                <p>
-                  Une structure créée pour l&apos;effet qu&apos;elle produit, et pas pour ce
-                  qu&apos;elle fait. Un schéma qui ne tient que si personne ne pose de question. Une
-                  opération dont vous ne sauriez pas expliquer la logique économique si on vous la
-                  demandait un mardi matin.
-                </p>
-                <p style={{ marginTop: "1.1em", color: "var(--gris-bas)" }}>
-                  Ce genre de dossier, nous le refusons. Pas par prudence excessive : parce
-                  qu&apos;il vous coûtera plus cher que ce qu&apos;il vous rapporte, et que vous
-                  dormirez mal.
-                </p>
-              </div>
-              <div className="fiche">
-                <span className="num">Ce que nous faisons</span>
-                <h3>La stratégie</h3>
-                <p>
-                  Décider ce que vous vous versez, sous quelle forme, depuis quelle entité, à quel
-                  moment de l&apos;année, et ce que vous faites de ce qui reste. Chaque décision est
-                  prévue par les textes, chaque texte est cité, chaque arbitrage est écrit avec ce
-                  qu&apos;il coûte et ce qu&apos;il vous fait perdre ailleurs.
-                </p>
-                <p style={{ marginTop: "1.1em", color: "var(--gris-bas)" }}>
-                  Vous devez pouvoir défendre votre plan vous-même, sans nous. C&apos;est le seul
-                  test qui compte.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 09 · MÉTHODE */}
-        <section id="methode" data-cote="07">
-          <div className="wrap">
-            <div className="intro">
-              <div>
-                <span className="eyebrow reveal">La méthode</span>
-                <h2 className="reveal">Trois temps, trente jours, un plan écrit</h2>
-              </div>
-              <p className="reponse reveal">
-              La mission dure trente jours au maximum, du premier échange à la remise du plan. Elle
-              se déroule en trois temps : nous auditons ce qui existe, nous arbitrons avec vous
-              scénario par scénario, puis nous documentons chaque décision par écrit. Tout se fait en
-              visio, où que vous soyez.
-            </p>
-            </div>
-            <div className="grille-3 reveal" style={{ marginTop: "2.4rem" }}>
-              <div className="fiche">
-                <span className="num">Temps 1 · jours 1 à 10</span>
-                <h3>Auditer</h3>
-                <p>
-                  Nous ouvrons tout : statuts, liasses des trois derniers exercices, contrats de
-                  prévoyance et de retraite, comptes courants, avis d&apos;imposition du foyer,
-                  crédits en cours. Nous mesurons l&apos;écart réel entre ce que la société produit
-                  et ce qui arrive chez vous, en euros, sur douze mois.
-                </p>
-                <div style={{ marginTop: "1.4em" }}>
-                  <span className="chip">Sortie : la cartographie</span>
-                </div>
-              </div>
-              <div className="fiche">
-                <span className="num">Temps 2 · jours 11 à 20</span>
-                <h3>Arbitrer</h3>
-                <p>
-                  Nous construisons deux ou trois scénarios chiffrés jusqu&apos;à l&apos;euro et nous
-                  les déroulons avec vous en séance. Chaque scénario porte son coût, son risque, sa
-                  charge administrative et ce qu&apos;il vous fait perdre ailleurs. Vous tranchez.
-                  Nous ne tranchons pas à votre place.
-                </p>
-                <div style={{ marginTop: "1.4em" }}>
-                  <span className="chip">Sortie : les scénarios</span>
-                </div>
-              </div>
-              <div className="fiche fiche--vert">
-                <span className="num">Temps 3 · jours 21 à 30</span>
-                <h3>Documenter</h3>
-                <p>
-                  Nous écrivons le plan : ce qui change, dans quel ordre, avec quel calendrier, sur
-                  quel fondement, et qui fait quoi. Vous pouvez demander une validation par un avocat
-                  fiscaliste partenaire, à votre main. Le rendez-vous avec votre expert-comptable se
-                  cale à ce moment-là.
-                </p>
-                <div style={{ marginTop: "1.4em" }}>
-                  <span className="chip chip--vert">Sortie : le plan signé</span>
-                </div>
-              </div>
-            </div>
-
-            <div style={{ marginTop: "18px" }}>
-              <FigCalendrier />
-            </div>
-          </div>
-        </section>
-
-        {/* 10 · LIVRABLE */}
-        <section data-cote="08" className="sombre">
-          <div className="wrap">
-            <div className="intro">
-              <div>
-                <span className="eyebrow reveal">Le livrable</span>
-                <h2 className="reveal">Ce que vous avez entre les mains au trentième jour</h2>
-              </div>
-              <p className="reponse reveal">
-              Un dossier écrit, pas une présentation. Six pièces, numérotées, que vous pouvez
-              transmettre à votre expert-comptable, à votre banque ou à votre avocat sans avoir
-              besoin de nous pour les expliquer.
-            </p>
-            </div>
-            <div className="livrables reveal" style={{ marginTop: "2.4rem" }}>
-              {LIVRABLES.map(([n, titre, texte]) => (
-                <div key={n}>
-                  <span className="n">{n}</span>
-                  <h4>{titre}</h4>
-                  <p>{texte}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="barre-cta reveal">
-              <p>Vous voulez savoir ce que ça donnerait chez vous ?</p>
-              <a className="btn btn--primaire" href="#dossier" data-ev="cta_livrable">
-                Voir si mon dossier passe <span className="fl">→</span>
-              </a>
-              <span>Réponse d&apos;un humain sous 24 h ouvrées</span>
-            </div>
-          </div>
-        </section>
-
-        {/* 11 · CTA INTERMÉDIAIRE */}
-        <section data-cote="09">
-          <div className="wrap wrap--etroit">
-            <span className="ancrage reveal">
-              Coût de l&apos;inaction : 20 à 30 k€ par an, environ 150 k€ sur dix ans
-            </span>
-            <h2 className="reveal">Deux façons de commencer</h2>
-            <p className="lead reveal">
-              Répondez à cinq questions et vous obtenez immédiatement une fourchette chiffrée de ce
-              que vous laissez probablement passer chaque année. Aucune coordonnée demandée à ce
-              stade. Si vous préférez en parler d&apos;abord, prenez trente minutes, sans engagement
-              et sans présentation commerciale.
-            </p>
-            <div className="actions reveal">
-              <a className="btn btn--primaire" href="#dossier" data-ev="cta_milieu">
-                Estimer ce que je laisse passer <span className="fl">→</span>
-              </a>
-              <a className="btn btn--fantome" href={CAL} data-ev="cta_cal_milieu">
-                Réserver 30 minutes
-              </a>
-            </div>
-            <p className="micro reveal">
-              Réponse d&apos;un humain sous 24 h ouvrées. Vous saurez tout de suite si votre
-              dossier relève de nous.
-            </p>
-          </div>
-        </section>
-
-        {/* 12 · ANATOMIE DU GAIN */}
-        <section id="preuve" data-cote="10" className="sombre">
-          <div className="wrap">
-            <div className="intro">
-              <div>
-                <span className="eyebrow reveal">La preuve</span>
-                <h2 className="reveal">Un dossier réel, ouvert devant vous</h2>
-              </div>
-              <p className="reponse reveal">
-              Un chiffre qu&apos;on répète est un argument. Un chiffre qu&apos;on ouvre ligne à ligne
-              est une preuve. Voici donc un dossier de cabinet, anonymisé : ce que nous avons trouvé,
-              ce que nous avons déplacé, et ce que nous n&apos;avons pas touché.
-            </p>
-            </div>
-
-            <div className="leviers reveal" style={{ marginTop: "2.4rem" }}>
-              {CAS.postes.map(([quoi, avant, apres], i) => (
-                <div className="levier" key={quoi}>
-                  <span className="n">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="quoi">{quoi}</span>
-                  <span className="etat avant"><small>Avant</small>{avant}</span>
-                  <span className="etat apres"><small>Après</small>{apres}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="resultat reveal">
-              <div className="gros">
-                <b>30 000 €</b>
-                <span>récupérés sur la première année</span>
-                <small>
-                  Quatre décisions ordinaires, prises dans le bon ordre. Ce ne sera pas forcément
-                  votre chiffre : un dossier sur cinq se conclut par « ne changez rien », et nous ne
-                  promettons rien avant d&apos;avoir ouvert le vôtre.
-                </small>
-              </div>
-              <Repetition />
-            </div>
-
-            <div className="intacts reveal">
-              {CAS.intacts.map((l) => (
-                <span key={l}>{l}</span>
-              ))}
-            </div>
-
-            <div className="actions reveal">
-              <a className="btn btn--primaire" href="#dossier" data-ev="cta_apres_preuve">
-                Voir ce que ça donne chez moi <span className="fl">→</span>
-              </a>
-              <a className="btn btn--texte" href={CAL} data-ev="cta_cal_preuve">
-                Ou en parler trente minutes
-              </a>
-            </div>
-            <p className="micro reveal">
-              Deux minutes de questions, et vous obtenez une première estimation chiffrée avant même
-              de nous laisser vos coordonnées.
-            </p>
-          </div>
-        </section>
-
-        {/* 13 · VERROUS */}
-        <section data-cote="11">
-          <div className="wrap">
-            <div className="intro">
-              <div>
-                <span className="eyebrow reveal">Nos verrous</span>
-                <h2 className="reveal">Trois règles qui vous protègent de nous</h2>
-              </div>
-              <p className="reponse reveal">
-              Le conseil patrimonial français a un problème structurel : la plupart des acteurs sont
-              rémunérés par les produits qu&apos;ils placent. Nous avons donc posé trois règles qui
-              rendent ce conflit impossible chez nous, et nous les écrivons sur la page plutôt que
-              dans nos conditions générales.
-            </p>
-            </div>
-            <div className="grille-3 reveal" style={{ marginTop: "2.4rem" }}>
-              <div className="fiche fiche--neutre">
-                <span className="num">Premier verrou</span>
-                <h3>Aucun produit maison</h3>
-                <p>
-                  Nous ne fabriquons rien, donc nous n&apos;avons rien à vous vendre. Si votre plan
-                  ne nécessite aucun contrat, il n&apos;y en aura aucun.
-                </p>
-              </div>
-              <div className="fiche fiche--neutre">
-                <span className="num">Deuxième verrou</span>
-                <h3>La mission est payée par vous</h3>
-                <p>
-                  Notre seule rémunération sur cette mission vient de vous. Personne d&apos;autre ne
-                  nous paie pour orienter vos décisions.
-                </p>
-              </div>
-              <div className="fiche fiche--neutre">
-                <span className="num">Troisième verrou</span>
-                <h3>Aucune promesse de rendement</h3>
-                <p>
-                  Nous chiffrons des écarts constatés sur votre situation. Nous ne projetons pas de
-                  performance et nous ne garantissons aucun montant.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 14 · SÉLECTIVITÉ */}
-        <section id="selectivite" data-cote="12" className="sombre">
-          <div className="wrap">
-            <div className="intro">
-              <div>
-                <span className="eyebrow reveal">Sélectivité</span>
-                <h2 className="reveal">Huit dossiers par mois, et nous choisissons lesquels</h2>
-              </div>
-              <p className="reponse reveal">
-              Ce n&apos;est pas une posture de rareté, c&apos;est une contrainte de méthode. Un
-              dossier demande une trentaine d&apos;heures réparties sur trente jours, dont plusieurs
-              séances avec vous. Au-delà de huit, la qualité tombe. Nous préférons refuser un dossier
-              que le traiter à moitié.
-            </p>
-            </div>
-            <div className="accroche reveal">
-              <p>Un dossier qui ne récupère rien nous coûte plus cher qu&apos;il ne vous coûte.</p>
-            </div>
-            <p className="reveal">
-              Nous refusons aussi les dossiers où nous ne serions pas impactants, même quand le
-              dirigeant souhaite avancer. Un accompagnement qui ne récupère rien vous coûte de
-              l&apos;argent et nous coûte notre réputation. Voici donc les critères, écrits.
-            </p>
-            <div className="tri reveal" style={{ marginTop: "2.2rem" }}>
-              <div className="col col--oui">
-                <h3>Nous prenons</h3>
-                <ul>
-                  {PRENONS.map((l) => (
-                    <li key={l}>{l}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="col col--non">
-                <h3>Nous ne prenons pas</h3>
-                <ul>
-                  {REFUSONS.map((l) => (
-                    <li key={l}>{l}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div className="fiche fiche--vert reveal" style={{ marginTop: "18px" }}>
-              <span className="num">Et si vous ne trouvez rien chez moi ?</span>
-              <p>
-                Ça arrive dans environ un dossier sur cinq : la situation est déjà cohérente, il
-                n&apos;y a pas d&apos;écart significatif à récupérer. Nous vous le disons par écrit,
-                avec le chiffrage qui le démontre. Vous repartez avec la cartographie complète de
-                votre situation et la certitude de ne pas passer à côté de quelque chose.
-              </p>
-            </div>
-
-            <div className="capacite reveal">
-              <span>Règle de capacité</span>
-              <span>
-                Les huit dossiers du mois partis, nous décalons au mois suivant et{" "}
-                <b>nous vous le disons dès la réponse</b>, plutôt que de vous faire patienter.
-              </span>
-            </div>
-          </div>
-        </section>
-
-        
-        {/* 16 · QUI S'EN OCCUPE */}
-        <section data-cote="14" className="sombre">
-          <div className="wrap">
-            <div className="intro">
-              <div>
-                <span className="eyebrow reveal">Qui s&apos;en occupe</span>
-                <h2 className="reveal">Deux personnes, pas un service</h2>
-              </div>
-              <p className="reponse reveal">
-              Votre dossier est traité par deux personnes identifiées, du premier échange à la remise
-              du plan. C&apos;est aussi pour ça qu&apos;il n&apos;y a que huit dossiers par mois.
-            </p>
-            </div>
-
-            <div className="equipe">
-              <div className="personne reveal">
-                <div className="portrait"><img src="/jeremy.png" alt="Jérémy Poutot" /></div>
-                <div className="fiche-p">
-                  <h4>Jérémy Poutot</h4>
-                  <span className="role">Fondateur · juriste du patrimoine</span>
-                  <p>Juriste du patrimoine et ingénieur patrimonial, il exerce aussi en family office auprès de dirigeants et de familles. C&apos;est lui qui mène la séance d&apos;arbitrage et qui signe le plan.</p>
-                  <ul>
-                    <li>Juriste du patrimoine</li>
-                    <li>Ingénierie patrimoniale et stratégies sociétaires</li>
-                    <li>Family office · dirigeants et groupes familiaux</li>
-                  </ul>
-                </div>
-              </div>
-              <div className="personne reveal">
-                <div className="portrait"><img src="/marie-amelie.png" alt="Marie-Amélie" /></div>
-                <div className="fiche-p">
-                  <h4>Marie-Amélie</h4>
-                  <span className="role">Pôle ingénierie patrimoniale</span>
-                  <p>Elle bâtit la cartographie et les scénarios, et c&apos;est elle qui va chercher la ligne qui manque dans la liasse.</p>
-                  <ul>
-                    <li>Votre interlocutrice pendant les trente jours</li>
-                    <li>Cartographie, scénarios chiffrés, plan écrit</li>
-                    <li>Réponse sous 24 h ouvrées</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div className="cabinet-stats reveal">
-              <div><b>8</b><span>experts salariés chez Arras Patrimoine</span></div>
-              <div><b>15</b><span>experts externes mobilisables selon le dossier</span></div>
-              <div><b>1</b><span>avocat fiscaliste partenaire, en option, à votre main</span></div>
-            </div>
-          </div>
-        </section>
-
-        {/* 17 · PREUVE SOCIALE */}
-        <section data-cote="15">
-          <div className="wrap">
-            <div className="intro">
-              <div>
-                <span className="eyebrow reveal">Ils l&apos;ont vécu</span>
-                <h2 className="reveal">Ce que disent ceux qui sont passés par là</h2>
-              </div>
-            </div>
-
-            <div className="avis-mur">
-              <div className="avis-total reveal">
-                <div className="n">{NOTE_GOOGLE.note}<small>/ {NOTE_GOOGLE.sur}</small></div>
-                <span className="etoiles">★★★★★</span>
-                <p className="src">{NOTE_GOOGLE.nombre} avis publics sur Google, tous cabinets d&apos;Arras Patrimoine confondus.</p>
-                <a href={NOTE_GOOGLE.lien} target="_blank" rel="noopener noreferrer" data-ev="clic_avis_google">
-                  Lire tous les avis <span className="fl">→</span>
-                </a>
-              </div>
-              <div className="avis-liste">
-                {AVIS.map(([texte, qui]) => (
-                  <div className="temoignage reveal" key={qui}>
-                    <span className="av">{qui.trim().split(" ").map((m) => m[0]).slice(0, 2).join("").toUpperCase()}</span>
-                    <div className="corps">
-                      <span className="et">★★★★★</span>
-                      <p>{texte}</p>
-                      <small>{qui}</small>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 18 · FAQ */}
-        <section data-cote="16" className="sombre">
-          <div className="wrap wrap--etroit">
-            <span className="eyebrow reveal">Questions fréquentes</span>
-            <h2 className="reveal">Ce que les dirigeants nous demandent avant de se lancer</h2>
-            <div className="faq reveal" style={{ marginTop: "2.2rem" }}>
-              {FAQ.map(([q, r]) => (
-                <details key={q}>
-                  <summary>{q}</summary>
-                  <div className="rep-faq">
-                    <p>{r}</p>
-                  </div>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 18 bis · CE QUE DONNE L'APPEL */}
-        <section data-cote="16b">
-          <div className="wrap">
-            <div className="intro">
-              <div>
-                <span className="eyebrow reveal">Sans engagement</span>
-                <h2 className="reveal">Ce que vous repartez avec après trente minutes</h2>
-              </div>
-              <p className="reponse reveal">
-                L&apos;échange de découverte n&apos;est pas une présentation commerciale. Nous ouvrons
-                votre situation à voix haute et vous repartez avec trois choses, que vous travailliez
-                avec nous ensuite ou non.
-              </p>
-            </div>
-            <div className="grille-3 reveal" style={{ marginTop: "2.4rem" }}>
-              <div className="fiche">
-                <span className="num">01</span>
-                <h3>Un avis franc</h3>
-                <p>
-                  Est-ce qu&apos;il y a un levier chez vous, oui ou non. Si la réponse est non, vous
-                  l&apos;entendrez pendant l&apos;appel, pas après avoir signé.
-                </p>
-              </div>
-              <div className="fiche">
-                <span className="num">02</span>
-                <h3>Un ordre de grandeur</h3>
-                <p>
-                  Ce que votre situation laisse probablement passer chaque année, avec la fourchette
-                  et surtout ce qui la fait varier.
-                </p>
-              </div>
-              <div className="fiche">
-                <span className="num">03</span>
-                <h3>Des explications, pas un argumentaire</h3>
-                <p>
-                  Vous comprendrez comment votre juridique, votre social et votre fiscal
-                  s&apos;articulent. Même si vous ne donnez pas suite, vous repartez avec ça.
-                </p>
-              </div>
-            </div>
-            <div className="rassurance reveal">
-              <p className="grand">
-                Vous n&apos;avez pas besoin de savoir comment vous vous rémunérez pour venir nous voir.
-              </p>
-              <p>
-                La plupart des dirigeants que nous accompagnons ne savent pas exactement ce qu&apos;ils
-                se versent, ni sous quelle forme, ni pourquoi c&apos;est construit comme ça. Ce
-                n&apos;est pas une lacune : c&apos;est précisément le problème que nous traitons.
-                Entre le juridique, le social et le fiscal, personne ne vous a jamais expliqué
-                clairement comment ces trois-là s&apos;articulent chez vous.
-              </p>
-              <p>
-                Notre métier, c&apos;est de vulgariser ce flou. Pas de vous interroger, pas de vous
-                mettre la pression. Vous répondez ce que vous savez, nous allons chercher le reste.
-              </p>
-              <p className="signature">C&apos;est pas compliqué, juste mal expliqué.</p>
-            </div>
-
-            <div className="rassure reveal" style={{ marginTop: "2rem" }}>
-              <span>30 minutes, en visio</span>
-              <span>Aucun document à préparer</span>
-              <span>Aucune relance si vous ne donnez pas suite</span>
-            </div>
-          </div>
-        </section>
-
-        
-        {/* 19 · QUESTIONNAIRE */}
-        <section data-cote="17" id="dossier">
-          <div className="wrap wrap--etroit">
-            <span className="ancrage reveal">
-              Ce que vous laissez peut-être passer : 20 à 30 k€ par an
-            </span>
-            <h2 className="reveal">Faites examiner votre situation</h2>
-            <p className="reponse reveal">
-              Douze questions, trois minutes, en quatre étapes. Elles servent à savoir si votre dossier
-              relève de nous, pas à alimenter une base de prospection. Dès la deuxième étape, avant
-              toute coordonnée, vous verrez apparaître une fourchette chiffrée de l&apos;écart annuel
-              que nous irions chercher chez vous. Ensuite, une personne du cabinet vous répond sous
-              24 h ouvrées.
-            </p>
-            <Formulaire />
-          </div>
-        </section>
-
-        {/* 20 · SORTIE DOUCE */}
-        <section data-cote="18" className="sombre">
-          <div className="wrap wrap--etroit">
-            <div className="fiche fiche--neutre reveal">
-              <span className="num">Si ce n&apos;est pas le moment</span>
-              <h3>Prenez le temps, tout est expliqué gratuitement</h3>
-              <p>
-                Arras Patrimoine publie Les Planches : des fiches complètes, avec schémas et
-                références officielles, sur le salaire et les dividendes, la holding, le compte
-                courant d&apos;associé, la prévoyance ou combien se payer quand on dirige. C&apos;est
-                pas compliqué, c&apos;est juste mal expliqué.
-              </p>
-              <div style={{ marginTop: "1.6em" }}>
-                <a
-                  className="btn btn--fantome"
-                  href="https://www.arras-patrimoine.fr/planches"
-                  data-ev="sortie_planches"
-                >
-                  Aller aux Planches <span className="fl">→</span>
-                </a>
-              </div>
+            <span className="eyebrow">Questions fréquentes</span>
+            <h2 className="u-h2">Avant qu'on s'appelle</h2>
+            <div className="faq" style={{ marginTop: "1.6rem" }}>
+              <details><summary>Pourquoi mon expert-comptable ne le fait pas ?</summary><div className="rep"><p>Parce que ce n'est pas dans son métier, et ce n'est pas un reproche. Il lui manque trois choses : le temps, la vision de votre foyer, et la revoyure. Il fait très bien les comptes, la paie et le déclaratif. Mesurer votre enveloppe dirigeant sur votre capacité réelle, pro et perso, et la revoir chaque année, ce n'est pas dedans. Le livrable lui est remis avec de quoi exécuter, et il reste l'exécutant naturel du scénario que vous choisissez.</p></div></details>
+              <details><summary>C'est un budget. Comment je sais si ça vaut le coup ?</summary><div className="rep"><p>On ne défend pas le prix, on le calcule sur votre cas. Le quiz collecte votre forme sociale et votre fourchette de rémunération, et on arrive au premier appel avec l'ordre de grandeur déjà posé. Sur un dossier livré, une société seule en profession libérale, l'écart de première année a été de 14 200 € pour 8 900 € HT d'honoraires. Ce ne sera pas forcément votre chiffre, mais vous l'aurez avant de décider.</p></div></details>
+              <details><summary>Et si j'ai un contrôle, vous êtes là ?</summary><div className="rep"><p>Deux étages. Le fond : on travaille sur la réglementation en vigueur, du droit positif, chaque décision est écrite avec sa référence, jamais un « je pense que ». La ceinture : la stratégie peut être approuvée par un avocat partenaire avant que vous signiez quoi que ce soit. Et une question en retour : votre situation actuelle, elle, a été validée par qui ?</p></div></details>
+              <details><summary>Est-ce que c'est une formation ?</summary><div className="rep"><p>Non. Vous ne repartez pas avec un cours, vous repartez avec votre stratégie, chiffrée sur votre propre dossier, au minimum trois scénarios, et de quoi les faire exécuter. Vous n'avez rien à apprendre avant de venir.</p></div></details>
+              <details><summary>Qui réalise l'audit et les scénarios ?</summary><div className="rep"><p>Jérémy Poutot mène le pré-audit, la séance d'arbitrage et signe le livrable. Marie-Amélie bâtit la cartographie et les scénarios et reste votre interlocutrice pendant les trente jours. Manon couvre la protection du dirigeant. Huit experts salariés et quinze experts externes sont mobilisables selon le dossier.</p></div></details>
+              <details><summary>Comment se passe le premier échange ?</summary><div className="rep"><p>Vingt-cinq minutes en visio. Vous dites comment vous vous rémunérez aujourd'hui et ce qui vous a fait ouvrir le sujet. On vous dit ce qu'on voit et si Cap. a quelque chose à apporter chez vous. Aucun document à préparer, aucune présentation commerciale.</p></div></details>
+              <details><summary>Et si vous ne trouvez rien ?</summary><div className="rep"><p>Ça arrive, et on le dit. Vous repartez quand même avec la cartographie complète de votre enveloppe, chiffrée, et la confirmation écrite que votre situation actuelle est la bonne. Savoir qu'on est au bon endroit a une valeur, surtout quand on en doutait.</p></div></details>
+              <details><summary>Mes chiffres sont-ils confidentiels ?</summary><div className="rep"><p>Oui. Les documents transitent par un espace dédié, ils ne sont partagés avec aucun tiers sans votre accord écrit, et l'avocat partenaire n'intervient que si vous choisissez l'option d'approbation. Les dossiers publiés sont anonymisés en typologies et le seront toujours.</p></div></details>
             </div>
           </div>
         </section>
 
         <footer className="pied">
-          <div className="wrap">
-            <span className="wordmark" style={{ fontSize: "34px" }}>
-              Cap<span className="pt">.</span>
-            </span>
-            <p style={{ marginTop: "1.4em" }}>
-              Cap. est l&apos;offre de stratégie de rémunération d&apos;Arras Patrimoine, SARL
-              immatriculée au RCS d&apos;Arras, boulevard de Strasbourg, 62000 Arras. Courtier en
-              assurance et courtier en opérations de banque et services de paiement, immatriculé à
-              l&apos;ORIAS sous le numéro 20006891, sous le contrôle de l&apos;ACPR.
-            </p>
-            <p>
-              Cap. réalise de l&apos;ingénierie et de la stratégie de rémunération. Le cabinet ne
-              délivre pas de consultation juridique : la validation juridique du plan est assurée, en
-              option et à votre demande, par un avocat fiscaliste partenaire. Les cas chiffrés
-              présentés sur cette page sont anonymisés et ne constituent ni une promesse ni un
-              engagement de résultat.
-            </p>
-            <p style={{ marginTop: "1.6em" }}>
-              <a href="https://www.arras-patrimoine.fr">Arras Patrimoine</a> ·{" "}
-              <a href="https://www.arras-patrimoine.fr/planches">Les Planches</a> ·{" "}
-              <a href="https://www.arras-patrimoine.fr/mentions-legales">Mentions légales</a> ·{" "}
-              <a href="mailto:contact@arras-patrimoine.fr">contact@arras-patrimoine.fr</a>
-            </p>
+          <div className="in">
+            <span className="wordmark" style={{ fontSize: "19px" }}>Cap<span className="pt">.</span></span>
+            <span className="u-tag">Cap. est la mission d'ingénierie de rémunération du dirigeant d'Arras Patrimoine, pour les PME à partir de 350 k€ de chiffre d'affaires.</span>
+            <a href="https://www.arras-patrimoine.fr">Arras Patrimoine</a>
+            <a href="https://www.arras-patrimoine.fr/planches">Les Planches</a>
+            <a href="https://www.arras-patrimoine.fr/mentions-legales">Mentions légales</a>
+            <span>contact@arras-patrimoine.fr</span>
+            <span className="u-orias">Arras Patrimoine, SARL · SIREN 884 625 450 · ORIAS n° 20006891 · courtier en assurance et COBSP, contrôle ACPR · responsabilité civile professionnelle. Aucune promesse de résultat. Les dossiers présentés sont des projections à droit constant sur dossiers réels, anonymisés en typologies, sans valeur d'engagement.</span>
           </div>
         </footer>
-
-        <BarreFlottante />
       </div>
+      <Collant ouvrir={ouvrir} />
+      <Quiz ouvert={quiz} fermer={fermer} origine={origine} />
     </>
   );
 }

@@ -33,11 +33,12 @@ export const LIVRABLES = [
 /* Note agrégée Google : à tenir à jour de temps en temps. */
 export const NOTE_GOOGLE = { note: "4,6", sur: "5", nombre: "35", lien: "https://www.google.com/search?q=Arras+Patrimoine+Avis" };
 
-/* Avis : texte, signature. À compléter avec les avis Google les plus parlants pour un dirigeant. */
+/* Avis Google publiés : [nom, qualité, texte]. Reproduits tels quels, aucun avis inventé.
+   Pour en ajouter un : copier l'avis depuis la fiche Google et ajouter une ligne. Le mur défilant s'adapte au nombre. */
 export const AVIS = [
-  ["Conseil, expertise, professionnalisme. Une société orientée solution, où le mot problème devient challenge.", "Mathieu F. · Investisseur et professionnel libéral"],
-  ["Conseils avisés, accompagnement hors pair à chaque étape du projet, réactivité. Je recommande à 1000 %.", "Angélique M. · Investisseuse et cadre"],
-  ["Des conseils adaptés, un suivi exceptionnel : l'équipe sait trouver des solutions correspondant aux besoins de chacun.", "Sifi Z. · Cadre"],
+  ["Mathieu F.", "Investisseur et professionnel libéral", "Conseil, expertise, professionnalisme. Une société orientée solution, où le mot problème devient challenge."],
+  ["Angélique M.", "Investisseuse et cadre", "Conseils avisés, suivi hors pair à chaque étape du projet, réactivité. Je recommande à 1000 %."],
+  ["Sifi Z.", "Cadre", "Des conseils adaptés, un suivi exceptionnel : l'équipe sait trouver des solutions correspondant aux besoins de chacun."],
 ];
 
 export const FAQ = [
@@ -215,4 +216,26 @@ export const SOUHAITS = [
   "Nettement plus, de l'ordre de 1 000 à 2 000 € par mois",
   "Beaucoup plus, ma rémunération n'a rien à voir avec ce que produit la société",
   "Je ne cherche pas à me verser plus, je cherche à mieux protéger ce que j'ai",
+];
+
+/* ——— Quiz v2 (tunnel Meta) ——— */
+export const REMUNERATIONS = ["Moins de 65 000 € net", "65 000 à 100 000 €", "100 000 à 150 000 €", "Plus de 150 000 €"];
+export const STRUCTURES = ["SARL ou EURL, seul", "SAS ou SASU, seul", "Groupe avec holding", "Société avec un ou plusieurs associés", "Autre"];
+export const CHIFFRES = ["Moins de 350 000 €", "350 000 € à 1 M€", "1 à 3 M€", "3 à 10 M€", "Plus de 10 M€"];
+export const SEUIL_HORS_CIBLE = "Moins de 350 000 €";
+export const SUIVIS = ["Personne", "Mon expert-comptable, au fil de l'eau", "Un conseiller, mais je ne suis pas convaincu", "Quelqu'un, et je cherche un deuxième avis"];
+export const DECLENCHEURS_QUIZ = [
+  ["plafond", "Je me limite à cause des charges"],
+  ["tresorerie", "De la trésorerie dort dans la société"],
+  ["holding", "Une holding mal branchée ou sans emploi"],
+  ["projet", "Un projet précis : achat, cession, association"],
+  ["banque", "La banque me freine à cause de mes revenus déclarés"],
+  ["retraite", "Aucune visibilité sur la retraite et la protection"],
+  ["doute", "Le sentiment de laisser de l'argent quelque part"],
+];
+export const COMPTABLE = [
+  "Il serait favorable à ce qu'on regarde",
+  "Il ne sait pas encore",
+  "Il risque de freiner",
+  "Je ne compte pas lui en parler tout de suite",
 ];
