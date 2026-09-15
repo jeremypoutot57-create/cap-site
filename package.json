@@ -1,0 +1,17 @@
+{
+  "name": "cap-arras-patrimoine",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Landing page Cap. — tunnel Meta, approche Ultra, PMC 14/09/2026",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  }
+}
